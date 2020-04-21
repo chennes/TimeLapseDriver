@@ -1,0 +1,474 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		28EDCC66244F9A9D00FB3237 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */; };
+		28EDCC68244F9A9D00FB3237 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC67244F9A9D00FB3237 /* ContentView.swift */; };
+		28EDCC6A244F9AA000FB3237 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC69244F9AA000FB3237 /* Assets.xcassets */; };
+		28EDCC6D244F9AA000FB3237 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC6C244F9AA000FB3237 /* Preview Assets.xcassets */; };
+		28EDCC70244F9AA000FB3237 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC6E244F9AA000FB3237 /* Main.storyboard */; };
+		28EDCC7C244F9AA000FB3237 /* TimeLapseDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC7B244F9AA000FB3237 /* TimeLapseDriverTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		28EDCC78244F9AA000FB3237 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28EDCC5A244F9A9D00FB3237 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 28EDCC61244F9A9D00FB3237;
+			remoteInfo = TimeLapseDriver;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		28EDCC62244F9A9D00FB3237 /* TimeLapseDriver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeLapseDriver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		28EDCC67244F9A9D00FB3237 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		28EDCC69244F9AA000FB3237 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		28EDCC6C244F9AA000FB3237 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		28EDCC6F244F9AA000FB3237 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		28EDCC71244F9AA000FB3237 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28EDCC72244F9AA000FB3237 /* TimeLapseDriver.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeLapseDriver.entitlements; sourceTree = "<group>"; };
+		28EDCC77244F9AA000FB3237 /* TimeLapseDriverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeLapseDriverTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28EDCC7B244F9AA000FB3237 /* TimeLapseDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLapseDriverTests.swift; sourceTree = "<group>"; };
+		28EDCC7D244F9AA000FB3237 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		28EDCC5F244F9A9D00FB3237 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28EDCC74244F9AA000FB3237 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		28EDCC59244F9A9D00FB3237 = {
+			isa = PBXGroup;
+			children = (
+				28EDCC64244F9A9D00FB3237 /* TimeLapseDriver */,
+				28EDCC7A244F9AA000FB3237 /* TimeLapseDriverTests */,
+				28EDCC63244F9A9D00FB3237 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		28EDCC63244F9A9D00FB3237 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28EDCC62244F9A9D00FB3237 /* TimeLapseDriver.app */,
+				28EDCC77244F9AA000FB3237 /* TimeLapseDriverTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		28EDCC64244F9A9D00FB3237 /* TimeLapseDriver */ = {
+			isa = PBXGroup;
+			children = (
+				28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */,
+				28EDCC67244F9A9D00FB3237 /* ContentView.swift */,
+				28EDCC69244F9AA000FB3237 /* Assets.xcassets */,
+				28EDCC6E244F9AA000FB3237 /* Main.storyboard */,
+				28EDCC71244F9AA000FB3237 /* Info.plist */,
+				28EDCC72244F9AA000FB3237 /* TimeLapseDriver.entitlements */,
+				28EDCC6B244F9AA000FB3237 /* Preview Content */,
+			);
+			path = TimeLapseDriver;
+			sourceTree = "<group>";
+		};
+		28EDCC6B244F9AA000FB3237 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				28EDCC6C244F9AA000FB3237 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		28EDCC7A244F9AA000FB3237 /* TimeLapseDriverTests */ = {
+			isa = PBXGroup;
+			children = (
+				28EDCC7B244F9AA000FB3237 /* TimeLapseDriverTests.swift */,
+				28EDCC7D244F9AA000FB3237 /* Info.plist */,
+			);
+			path = TimeLapseDriverTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		28EDCC61244F9A9D00FB3237 /* TimeLapseDriver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28EDCC80244F9AA000FB3237 /* Build configuration list for PBXNativeTarget "TimeLapseDriver" */;
+			buildPhases = (
+				28EDCC5E244F9A9D00FB3237 /* Sources */,
+				28EDCC5F244F9A9D00FB3237 /* Frameworks */,
+				28EDCC60244F9A9D00FB3237 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TimeLapseDriver;
+			productName = TimeLapseDriver;
+			productReference = 28EDCC62244F9A9D00FB3237 /* TimeLapseDriver.app */;
+			productType = "com.apple.product-type.application";
+		};
+		28EDCC76244F9AA000FB3237 /* TimeLapseDriverTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28EDCC83244F9AA000FB3237 /* Build configuration list for PBXNativeTarget "TimeLapseDriverTests" */;
+			buildPhases = (
+				28EDCC73244F9AA000FB3237 /* Sources */,
+				28EDCC74244F9AA000FB3237 /* Frameworks */,
+				28EDCC75244F9AA000FB3237 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				28EDCC79244F9AA000FB3237 /* PBXTargetDependency */,
+			);
+			name = TimeLapseDriverTests;
+			productName = TimeLapseDriverTests;
+			productReference = 28EDCC77244F9AA000FB3237 /* TimeLapseDriverTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		28EDCC5A244F9A9D00FB3237 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1140;
+				LastUpgradeCheck = 1140;
+				TargetAttributes = {
+					28EDCC61244F9A9D00FB3237 = {
+						CreatedOnToolsVersion = 11.4.1;
+					};
+					28EDCC76244F9AA000FB3237 = {
+						CreatedOnToolsVersion = 11.4.1;
+						TestTargetID = 28EDCC61244F9A9D00FB3237;
+					};
+				};
+			};
+			buildConfigurationList = 28EDCC5D244F9A9D00FB3237 /* Build configuration list for PBXProject "TimeLapseDriver" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 28EDCC59244F9A9D00FB3237;
+			productRefGroup = 28EDCC63244F9A9D00FB3237 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				28EDCC61244F9A9D00FB3237 /* TimeLapseDriver */,
+				28EDCC76244F9AA000FB3237 /* TimeLapseDriverTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		28EDCC60244F9A9D00FB3237 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28EDCC70244F9AA000FB3237 /* Main.storyboard in Resources */,
+				28EDCC6D244F9AA000FB3237 /* Preview Assets.xcassets in Resources */,
+				28EDCC6A244F9AA000FB3237 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28EDCC75244F9AA000FB3237 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		28EDCC5E244F9A9D00FB3237 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28EDCC68244F9A9D00FB3237 /* ContentView.swift in Sources */,
+				28EDCC66244F9A9D00FB3237 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28EDCC73244F9AA000FB3237 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28EDCC7C244F9AA000FB3237 /* TimeLapseDriverTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		28EDCC79244F9AA000FB3237 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 28EDCC61244F9A9D00FB3237 /* TimeLapseDriver */;
+			targetProxy = 28EDCC78244F9AA000FB3237 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		28EDCC6E244F9AA000FB3237 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28EDCC6F244F9AA000FB3237 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		28EDCC7E244F9AA000FB3237 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		28EDCC7F244F9AA000FB3237 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		28EDCC81244F9AA000FB3237 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TimeLapseDriver/TimeLapseDriver.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"TimeLapseDriver/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = TimeLapseDriver/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chrishennes.TimeLapseDriver;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		28EDCC82244F9AA000FB3237 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TimeLapseDriver/TimeLapseDriver.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"TimeLapseDriver/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = TimeLapseDriver/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chrishennes.TimeLapseDriver;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		28EDCC84244F9AA000FB3237 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TimeLapseDriverTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chrishennes.TimeLapseDriverTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TimeLapseDriver.app/Contents/MacOS/TimeLapseDriver";
+			};
+			name = Debug;
+		};
+		28EDCC85244F9AA000FB3237 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TimeLapseDriverTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chrishennes.TimeLapseDriverTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TimeLapseDriver.app/Contents/MacOS/TimeLapseDriver";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		28EDCC5D244F9A9D00FB3237 /* Build configuration list for PBXProject "TimeLapseDriver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28EDCC7E244F9AA000FB3237 /* Debug */,
+				28EDCC7F244F9AA000FB3237 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28EDCC80244F9AA000FB3237 /* Build configuration list for PBXNativeTarget "TimeLapseDriver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28EDCC81244F9AA000FB3237 /* Debug */,
+				28EDCC82244F9AA000FB3237 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28EDCC83244F9AA000FB3237 /* Build configuration list for PBXNativeTarget "TimeLapseDriverTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28EDCC84244F9AA000FB3237 /* Debug */,
+				28EDCC85244F9AA000FB3237 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 28EDCC5A244F9A9D00FB3237 /* Project object */;
+}
