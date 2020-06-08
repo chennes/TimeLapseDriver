@@ -7,12 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28354066248EB7D9002D92D0 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28354065248EB7D9002D92D0 /* StatusView.swift */; };
+		2835406A248EB905002D92D0 /* SingleStepperStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28354069248EB905002D92D0 /* SingleStepperStatusView.swift */; };
+		284BCFFC2467724800C929E8 /* GlobalControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284BCFFB2467724800C929E8 /* GlobalControlView.swift */; };
+		287127C8247B571D00EC149E /* SingleRampConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287127C7247B571D00EC149E /* SingleRampConfigurationView.swift */; };
+		287127CC247B5E2600EC149E /* RampConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287127CB247B5E2600EC149E /* RampConfigurationView.swift */; };
+		287127CE247C1D8400EC149E /* SingleRampDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287127CD247C1D8400EC149E /* SingleRampDisplayView.swift */; };
+		288260972463AD7F007C04AF /* KeyframeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288260962463AD7F007C04AF /* KeyframeEditView.swift */; };
+		2882609B24646138007C04AF /* StepperControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2882609A24646138007C04AF /* StepperControlView.swift */; };
+		2882609F24646D57007C04AF /* MasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2882609E24646D57007C04AF /* MasterController.swift */; };
+		288260A0246476CA007C04AF /* StepperMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2882609C24646976007C04AF /* StepperMotor.swift */; };
+		288AA4D12474AF7400B440CC /* Ramp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288AA4D02474AF7400B440CC /* Ramp.swift */; };
+		28A0712524631C430000EE2A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A0712424631C430000EE2A /* main.swift */; };
+		28A0712924631C630000EE2A /* SliderSerialInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */; };
+		28A0712B246321620000EE2A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A0712A246321620000EE2A /* ContentView.swift */; };
 		28EDCC66244F9A9D00FB3237 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */; };
-		28EDCC68244F9A9D00FB3237 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC67244F9A9D00FB3237 /* ContentView.swift */; };
 		28EDCC6A244F9AA000FB3237 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC69244F9AA000FB3237 /* Assets.xcassets */; };
 		28EDCC6D244F9AA000FB3237 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC6C244F9AA000FB3237 /* Preview Assets.xcassets */; };
 		28EDCC70244F9AA000FB3237 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC6E244F9AA000FB3237 /* Main.storyboard */; };
 		28EDCC7C244F9AA000FB3237 /* TimeLapseDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC7B244F9AA000FB3237 /* TimeLapseDriverTests.swift */; };
+		28EDCC90244F9BB900FB3237 /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EDCC8C244F9B7700FB3237 /* ORSSerial.framework */; };
+		28EDCC92244F9C3E00FB3237 /* SliderSerialInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */; };
+		28EDCC93244F9C3E00FB3237 /* SliderSerialInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */; };
+		28EDCC95244FBB6600FB3237 /* Keyframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC94244FBB6600FB3237 /* Keyframe.swift */; };
+		28EDCC96244FBB6600FB3237 /* Keyframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC94244FBB6600FB3237 /* Keyframe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +41,51 @@
 			remoteGlobalIDString = 28EDCC61244F9A9D00FB3237;
 			remoteInfo = TimeLapseDriver;
 		};
+		28EDCC8B244F9B7700FB3237 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28EDCC86244F9B7700FB3237 /* ORSSerialPort.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DCA89121A2BB106009285EB;
+			remoteInfo = ORSSerial;
+		};
+		28EDCC8D244F9B7700FB3237 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28EDCC86244F9B7700FB3237 /* ORSSerialPort.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D7472131B6D7767002D8B10;
+			remoteInfo = "ORSSerialPort Tests";
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		28A0712024631C430000EE2A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		28354065248EB7D9002D92D0 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
+		28354069248EB905002D92D0 /* SingleStepperStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleStepperStatusView.swift; sourceTree = "<group>"; };
+		284BCFFB2467724800C929E8 /* GlobalControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalControlView.swift; sourceTree = "<group>"; };
+		287127C7247B571D00EC149E /* SingleRampConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleRampConfigurationView.swift; sourceTree = "<group>"; };
+		287127CB247B5E2600EC149E /* RampConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RampConfigurationView.swift; sourceTree = "<group>"; };
+		287127CD247C1D8400EC149E /* SingleRampDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleRampDisplayView.swift; sourceTree = "<group>"; };
+		288260962463AD7F007C04AF /* KeyframeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyframeEditView.swift; sourceTree = "<group>"; };
+		2882609A24646138007C04AF /* StepperControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperControlView.swift; sourceTree = "<group>"; };
+		2882609C24646976007C04AF /* StepperMotor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperMotor.swift; sourceTree = "<group>"; };
+		2882609E24646D57007C04AF /* MasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterController.swift; sourceTree = "<group>"; };
+		288AA4D02474AF7400B440CC /* Ramp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ramp.swift; sourceTree = "<group>"; };
+		28A0712224631C430000EE2A /* TimelapseCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TimelapseCLI; sourceTree = BUILT_PRODUCTS_DIR; };
+		28A0712424631C430000EE2A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		28A0712A246321620000EE2A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		28EDCC62244F9A9D00FB3237 /* TimeLapseDriver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeLapseDriver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		28EDCC67244F9A9D00FB3237 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		28EDCC69244F9AA000FB3237 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28EDCC6C244F9AA000FB3237 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		28EDCC6F244F9AA000FB3237 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -37,13 +94,24 @@
 		28EDCC77244F9AA000FB3237 /* TimeLapseDriverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeLapseDriverTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28EDCC7B244F9AA000FB3237 /* TimeLapseDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLapseDriverTests.swift; sourceTree = "<group>"; };
 		28EDCC7D244F9AA000FB3237 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28EDCC86244F9B7700FB3237 /* ORSSerialPort.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ORSSerialPort.xcodeproj; path = "Frameworks/ORSSerialPort/Framework Project/ORSSerialPort.xcodeproj"; sourceTree = "<group>"; };
+		28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderSerialInterface.swift; sourceTree = "<group>"; };
+		28EDCC94244FBB6600FB3237 /* Keyframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyframe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		28A0711F24631C430000EE2A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28EDCC5F244F9A9D00FB3237 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28EDCC90244F9BB900FB3237 /* ORSSerial.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,12 +125,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28A0712324631C430000EE2A /* TimelapseCLI */ = {
+			isa = PBXGroup;
+			children = (
+				28A0712424631C430000EE2A /* main.swift */,
+			);
+			path = TimelapseCLI;
+			sourceTree = "<group>";
+		};
 		28EDCC59244F9A9D00FB3237 = {
 			isa = PBXGroup;
 			children = (
+				28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */,
 				28EDCC64244F9A9D00FB3237 /* TimeLapseDriver */,
 				28EDCC7A244F9AA000FB3237 /* TimeLapseDriverTests */,
+				28A0712324631C430000EE2A /* TimelapseCLI */,
 				28EDCC63244F9A9D00FB3237 /* Products */,
+				28EDCC86244F9B7700FB3237 /* ORSSerialPort.xcodeproj */,
+				28EDCC8F244F9BB900FB3237 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +151,7 @@
 			children = (
 				28EDCC62244F9A9D00FB3237 /* TimeLapseDriver.app */,
 				28EDCC77244F9AA000FB3237 /* TimeLapseDriverTests.xctest */,
+				28A0712224631C430000EE2A /* TimelapseCLI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,12 +160,24 @@
 			isa = PBXGroup;
 			children = (
 				28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */,
-				28EDCC67244F9A9D00FB3237 /* ContentView.swift */,
+				28EDCC94244FBB6600FB3237 /* Keyframe.swift */,
+				2882609E24646D57007C04AF /* MasterController.swift */,
+				2882609C24646976007C04AF /* StepperMotor.swift */,
+				288AA4D02474AF7400B440CC /* Ramp.swift */,
 				28EDCC69244F9AA000FB3237 /* Assets.xcassets */,
 				28EDCC6E244F9AA000FB3237 /* Main.storyboard */,
 				28EDCC71244F9AA000FB3237 /* Info.plist */,
 				28EDCC72244F9AA000FB3237 /* TimeLapseDriver.entitlements */,
 				28EDCC6B244F9AA000FB3237 /* Preview Content */,
+				28A0712A246321620000EE2A /* ContentView.swift */,
+				284BCFFB2467724800C929E8 /* GlobalControlView.swift */,
+				288260962463AD7F007C04AF /* KeyframeEditView.swift */,
+				2882609A24646138007C04AF /* StepperControlView.swift */,
+				287127C7247B571D00EC149E /* SingleRampConfigurationView.swift */,
+				287127CD247C1D8400EC149E /* SingleRampDisplayView.swift */,
+				287127CB247B5E2600EC149E /* RampConfigurationView.swift */,
+				28354065248EB7D9002D92D0 /* StatusView.swift */,
+				28354069248EB905002D92D0 /* SingleStepperStatusView.swift */,
 			);
 			path = TimeLapseDriver;
 			sourceTree = "<group>";
@@ -106,9 +199,42 @@
 			path = TimeLapseDriverTests;
 			sourceTree = "<group>";
 		};
+		28EDCC87244F9B7700FB3237 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28EDCC8C244F9B7700FB3237 /* ORSSerial.framework */,
+				28EDCC8E244F9B7700FB3237 /* ORSSerialPort Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		28EDCC8F244F9BB900FB3237 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		28A0712124631C430000EE2A /* TimelapseCLI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28A0712624631C430000EE2A /* Build configuration list for PBXNativeTarget "TimelapseCLI" */;
+			buildPhases = (
+				28A0711E24631C430000EE2A /* Sources */,
+				28A0711F24631C430000EE2A /* Frameworks */,
+				28A0712024631C430000EE2A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TimelapseCLI;
+			productName = TimelapseCLI;
+			productReference = 28A0712224631C430000EE2A /* TimelapseCLI */;
+			productType = "com.apple.product-type.tool";
+		};
 		28EDCC61244F9A9D00FB3237 /* TimeLapseDriver */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 28EDCC80244F9AA000FB3237 /* Build configuration list for PBXNativeTarget "TimeLapseDriver" */;
@@ -151,8 +277,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1150;
 				TargetAttributes = {
+					28A0712124631C430000EE2A = {
+						CreatedOnToolsVersion = 11.4.1;
+					};
 					28EDCC61244F9A9D00FB3237 = {
 						CreatedOnToolsVersion = 11.4.1;
 					};
@@ -173,13 +302,37 @@
 			mainGroup = 28EDCC59244F9A9D00FB3237;
 			productRefGroup = 28EDCC63244F9A9D00FB3237 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 28EDCC87244F9B7700FB3237 /* Products */;
+					ProjectRef = 28EDCC86244F9B7700FB3237 /* ORSSerialPort.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				28EDCC61244F9A9D00FB3237 /* TimeLapseDriver */,
 				28EDCC76244F9AA000FB3237 /* TimeLapseDriverTests */,
+				28A0712124631C430000EE2A /* TimelapseCLI */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		28EDCC8C244F9B7700FB3237 /* ORSSerial.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ORSSerial.framework;
+			remoteRef = 28EDCC8B244F9B7700FB3237 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		28EDCC8E244F9B7700FB3237 /* ORSSerialPort Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ORSSerialPort Tests.xctest";
+			remoteRef = 28EDCC8D244F9B7700FB3237 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		28EDCC60244F9A9D00FB3237 /* Resources */ = {
@@ -202,12 +355,34 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		28A0711E24631C430000EE2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28A0712924631C630000EE2A /* SliderSerialInterface.swift in Sources */,
+				28A0712524631C430000EE2A /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28EDCC5E244F9A9D00FB3237 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28EDCC68244F9A9D00FB3237 /* ContentView.swift in Sources */,
+				2882609B24646138007C04AF /* StepperControlView.swift in Sources */,
+				287127CC247B5E2600EC149E /* RampConfigurationView.swift in Sources */,
+				284BCFFC2467724800C929E8 /* GlobalControlView.swift in Sources */,
+				288260A0246476CA007C04AF /* StepperMotor.swift in Sources */,
+				28354066248EB7D9002D92D0 /* StatusView.swift in Sources */,
+				288AA4D12474AF7400B440CC /* Ramp.swift in Sources */,
+				2882609F24646D57007C04AF /* MasterController.swift in Sources */,
+				2835406A248EB905002D92D0 /* SingleStepperStatusView.swift in Sources */,
+				28EDCC95244FBB6600FB3237 /* Keyframe.swift in Sources */,
+				28EDCC92244F9C3E00FB3237 /* SliderSerialInterface.swift in Sources */,
+				287127C8247B571D00EC149E /* SingleRampConfigurationView.swift in Sources */,
+				28A0712B246321620000EE2A /* ContentView.swift in Sources */,
 				28EDCC66244F9A9D00FB3237 /* AppDelegate.swift in Sources */,
+				288260972463AD7F007C04AF /* KeyframeEditView.swift in Sources */,
+				287127CE247C1D8400EC149E /* SingleRampDisplayView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +390,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28EDCC96244FBB6600FB3237 /* Keyframe.swift in Sources */,
+				28EDCC93244F9C3E00FB3237 /* SliderSerialInterface.swift in Sources */,
 				28EDCC7C244F9AA000FB3237 /* TimeLapseDriverTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +418,26 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		28A0712724631C430000EE2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		28A0712824631C430000EE2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		28EDCC7E244F9AA000FB3237 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -359,6 +556,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TimeLapseDriver/TimeLapseDriver.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"TimeLapseDriver/Preview Content\"";
@@ -380,6 +578,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TimeLapseDriver/TimeLapseDriver.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"TimeLapseDriver/Preview Content\"";
@@ -441,6 +640,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		28A0712624631C430000EE2A /* Build configuration list for PBXNativeTarget "TimelapseCLI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28A0712724631C430000EE2A /* Debug */,
+				28A0712824631C430000EE2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		28EDCC5D244F9A9D00FB3237 /* Build configuration list for PBXProject "TimeLapseDriver" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
