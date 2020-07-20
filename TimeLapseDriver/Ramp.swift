@@ -7,7 +7,8 @@
 
 import Foundation
 
-final class Ramp: ObservableObject {
+final class Ramp: ObservableObject, NSCopying {
+    
     
     let vstart:UInt32 = 1
     @Published var a1:UInt32 = 1000
@@ -18,71 +19,122 @@ final class Ramp: ObservableObject {
     @Published var d1:UInt32 = 5000
     let vstop:UInt32 = 10
     
+    private let fClk:UInt32 = 16000000 // 16MHz clock frequency
+    
     enum TravelPhase {
         case phase1 // We stopped accelerating before reaching v1
         case phase2 // We stopped accelerating after v1, but before vmax
         case normal // We reached vmax
     }
     
+    init () {
+        // Do nothing
+    }
+    
+    init (a1:UInt32, v1:UInt32, amax:UInt32, vmax:UInt32, dmax:UInt32, d1:UInt32) {
+        self.a1 = a1
+        self.v1 = v1
+        self.amax = amax
+        self.vmax = vmax
+        self.dmax = dmax
+        self.d1 = d1
+    }
+    
+    init (ramp:Ramp) {
+        self.a1 = ramp.a1
+        self.v1 = ramp.v1
+        self.amax = ramp.amax
+        self.vmax = ramp.vmax
+        self.dmax = ramp.dmax
+        self.d1 = ramp.d1
+    }
+    
+    /// Calculate the velocity in microsteps per second
+    func velocityInRealUnits (v:UInt32) -> Double {
+        // TMC5041_datasheet.pdf p. 53
+        let factor = Double(fClk) / 2.0 / 8388608.0 // 2^23 = 8,388,608
+        return Double(v) * factor
+    }
+    
+    /// Calculate the acceleration in microsteps per second per second
+    func accelerationInRealUnits (a:UInt32) -> Double {
+        // TMC5041_datasheet.pdf p. 53
+        let factor = Double(fClk)*Double(fClk)/(512.0*256.0)/16777216.0 // 2^24 = 16,777,216
+        return Double(a) * factor
+    }
+    
+    func velocityInTrinamicUnits(v:Double) -> UInt32 {
+        let factor = Double(fClk) / 2.0 / 8388608.0 // 2^23 = 8,388,608
+        return UInt32(abs(v / factor))
+    }
+    
+    func accelerationInTrinamicUnits(a:Double) -> UInt32 {
+        let factor = Double(fClk)*Double(fClk)/(512.0*256.0)/16777216.0 // 2^24 = 16,777,216
+        return UInt32(abs(a / factor))
+    }
+    
     /**
      For the given six-stage velocity ramp this object represents, determine the time it will take to travel a given number of microsteps.
      */
     func getTravelTime(distance:UInt32) -> (Double,TravelPhase) {
-        let t1:Double = Double(v1-vstart)/Double(a1)
-        let t2:Double = Double(vmax-v1)/Double(amax)
+        
+        if distance == 0 {
+            return (0.0,.normal)
+        }
+        
+        let vstartu = velocityInRealUnits(v:vstart)
+        let v1u = velocityInRealUnits(v:v1)
+        let vmaxu = velocityInRealUnits(v:vmax)
+        let vstopu = velocityInRealUnits(v:vstop)
+        
+        let a1u = accelerationInRealUnits(a: a1)
+        let amaxu = accelerationInRealUnits(a: amax)
+        let dmaxu = accelerationInRealUnits(a: dmax)
+        let d1u = accelerationInRealUnits(a: d1)
+        
+        let t1 = (v1u-vstartu)/a1u
+        let t2 = (vmaxu-v1u)/amaxu
         // t3 will be the time spent at vmax....
-        let t4:Double = Double(vmax-v1)/Double(dmax) // Decelerations are given as positive numbers
-        let t5:Double = Double(v1-vstop)/Double(d1)
+        let t4 = (vmaxu-v1u)/dmaxu // Decelerations are given as positive numbers
+        let t5 = (v1u-vstopu)/d1u
         
         // Figure out how far we travelled in each velocity segment, assuming perfectly linear acceleration, etc.
-        let dist1:Double = t1 * Double(v1-vstart)/2.0 + t1*Double(vstart)
-        let dist2:Double = t2 * Double(vmax-v1)/2.0  + t2*Double(v1)
+        let dist1 = t1 * (v1u-vstartu)/2.0 + t1*vstartu
+        let dist2 = t2 * (vmaxu-v1u)/2.0  + t2*v1u
         // dist3 is the main travel distance
-        let dist4:Double = t4 * Double(vmax-1)/2.0  + t4*Double(v1)
-        let dist5:Double = t5 * Double(v1-vstop)/2.0 + t5*Double(vstop)
+        let dist4 = t4 * (vmaxu-v1u)/2.0  + t4*v1u
+        let dist5 = t5 * (v1u-vstopu)/2.0 + t5*vstopu
         
         // Now, see if we actually reach vmax:
         if dist1+dist2+dist4+dist5 > Double(distance) {
             // Nope: so we need to figure out where the stepper is going to stop the acceleration to switch to deceleration
             if dist1+dist5 > Double(distance) {
-                // We never make it out of the first acceleration phase. Assume the acceleration is constant (zero jerk):
-                let da = a1+d1 // d1 is given as positive, but is really negative
-                let dv = vstart-vstop
-                
-                let A = Double((a1+da*da)/2)
-                let B = Double(vstart + da*dv/2 + vstop*da/d1)
-                let C = Double(dv*dv/2 + vstop*dv/d1 - distance)
-                
-                let t1Actual = (-B + sqrt(B*B-4*A*C)) / (2*A)
-                let t5Actual = (Double(a1)*t1Actual + Double(vstart - vstop)) / -Double(d1)
-                
-                let tActual = t1Actual + t5Actual
+                // We never make it out of the first acceleration phase. Just take a quick estimate, we can do the real math later
+                let tActual = (t1 + t5) * (dist1+dist5) / Double(distance)
                 return (tActual, .phase1)
                 
             } else {
-                // We make it into the second acceleration phase. This can be treated with the same equation as the first phase if
-                // we first subtract off the starting region and ending region, whose parameters we know. It's a bit simpler because
-                // the start and stop velocities are the same, only the accelerations differ.
-                let middleDistance = Double(distance) - dist1 - dist5
-                
-                let da = amax+dmax // dmax is given as positive, but is actually negative
-                
-                let A = Double((amax+da*da)/2)
-                let B = Double(v1 + v1*da/dmax)
-                let C = middleDistance
-                
-                let t2Actual = (-B + sqrt(B*B-4*A*C)) / (2*A)
-                let t4Actual = (Double(amax)*t2Actual) / -Double(dmax)
-                
-                let tActual = t2Actual + t4Actual + t1 + t5
+                let tActual = t1 + t5 + (t2 + t4) * (dist1+dist2+dist4+dist5) / Double(distance)
+                // We make it into the second acceleration phase.
                 return (tActual,.phase2)
             }
         } else {
             // Yes, the normal case. Find out how long we are at vmax:
             let dist3 = Double(distance) - dist1 - dist2 - dist4 - dist5
-            let t3 = dist3 / Double(vmax)
+            let t3 = dist3 / vmaxu
             return (t1 + t2 + t3 + t4 + t5, .normal)
         }
+    }
+    
+    func copy(with zone: NSZone? = nil) -> Any {
+        let newRamp = Ramp()
+        newRamp.a1 = self.a1
+        newRamp.v1 = self.v1
+        newRamp.amax = self.amax
+        newRamp.vmax = self.vmax
+        newRamp.dmax = self.dmax
+        newRamp.d1 = self.d1
+        return newRamp
     }
     
 }

@@ -9,21 +9,30 @@ import SwiftUI
 
 struct SingleRampDisplayView: View {
     @EnvironmentObject var ramp: Ramp
-    @State private var a1: String = "1000"
-    @State private var v1: String = "5000"
-    @State private var amax: String = "2000"
-    @State private var vmax: String = "51200"
-    @State private var dmax: String = "2000"
-    @State private var d1: String = "5000"
+    @State private var a1: UInt32 = 1000
+    @State private var v1: UInt32 = 5000
+    @State private var amax: UInt32 = 2000
+    @State private var vmax: UInt32 = 51200
+    @State private var dmax: UInt32 = 2000
+    @State private var d1: UInt32 = 5000
+    
+    static var integerFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }
+    
     var body: some View {
         VStack {
             HStack {
                 (Text("a") + Text("1")
                     .font(.system(size: 8.0))
                     .baselineOffset(-6.0)).frame(width: 25, height: nil, alignment: .bottomLeading)
-                TextField("1000", text: self.$a1)
+                TextField("1000", value: $a1, formatter: SingleRampDisplayView.integerFormatter, onCommit: {
+                    self.ramp.a1   = self.a1
+                })
                     .onReceive(self.ramp.$a1, perform: {
-                        self.a1 = String($0)
+                        self.a1 = $0
                     })
                     .frame(width: 80, height: nil, alignment: .bottomLeading)
             }
@@ -31,9 +40,11 @@ struct SingleRampDisplayView: View {
                 (Text("v") + Text("1")
                     .font(.system(size: 8.0))
                     .baselineOffset(-6.0)).frame(width: 25, height: nil, alignment: .bottomLeading)
-                TextField("1000", text: self.$v1)
+                TextField("1000", value: self.$v1, formatter: SingleRampDisplayView.integerFormatter, onCommit: {
+                    self.ramp.v1   = self.v1
+                })
                     .onReceive(self.ramp.$v1, perform: {
-                        self.v1 = String($0)
+                        self.v1 = $0
                     })
                     .frame(width: 80, height: nil, alignment: .bottomLeading)
             }
@@ -41,9 +52,11 @@ struct SingleRampDisplayView: View {
                 (Text("a") + Text("max")
                     .font(.system(size: 8.0))
                     .baselineOffset(-6.0)).frame(width: 25, height: nil, alignment: .bottomLeading)
-                TextField("1000", text: self.$amax)
+                TextField("1000", value: self.$amax, formatter: SingleRampDisplayView.integerFormatter, onCommit: {
+                    self.ramp.amax   = self.amax
+                })
                     .onReceive(self.ramp.$amax, perform: {
-                        self.amax = String($0)
+                        self.amax = $0
                     })
                     .frame(width: 80, height: nil, alignment: .bottomLeading)
             }
@@ -51,9 +64,11 @@ struct SingleRampDisplayView: View {
                 (Text("v") + Text("max")
                     .font(.system(size: 8.0))
                     .baselineOffset(-6.0)).frame(width: 25, height: nil, alignment: .bottomLeading)
-                TextField("1000", text: self.$vmax)
+                TextField("1000", value: self.$vmax, formatter: SingleRampDisplayView.integerFormatter, onCommit: {
+                    self.ramp.vmax   = self.vmax
+                })
                     .onReceive(self.ramp.$vmax, perform: {
-                        self.vmax = String($0)
+                        self.vmax = $0
                     })
                     .frame(width: 80, height: nil, alignment: .bottomLeading)
             }
@@ -61,9 +76,11 @@ struct SingleRampDisplayView: View {
                 (Text("d") + Text("max")
                     .font(.system(size: 8.0))
                     .baselineOffset(-6.0)).frame(width: 25, height: nil, alignment: .bottomLeading)
-                TextField("1000", text: self.$dmax)
+                TextField("1000", value: self.$dmax, formatter: SingleRampDisplayView.integerFormatter, onCommit: {
+                    self.ramp.dmax   = self.dmax
+                })
                     .onReceive(self.ramp.$dmax, perform: {
-                        self.dmax = String($0)
+                        self.dmax = $0
                     })
                     .frame(width: 80, height: nil, alignment: .bottomLeading)
             }
@@ -71,9 +88,11 @@ struct SingleRampDisplayView: View {
                 (Text("d") + Text("1")
                     .font(.system(size: 8.0))
                     .baselineOffset(-6.0)).frame(width: 25, height: nil, alignment: .bottomLeading)
-                TextField("1000", text: self.$d1)
+                TextField("1000", value: self.$d1, formatter: SingleRampDisplayView.integerFormatter, onCommit: {
+                    self.ramp.d1   = self.d1
+                })
                     .onReceive(self.ramp.$d1, perform: {
-                        self.d1 = String($0)
+                        self.d1 = $0
                     })
                     .frame(width: 80, height: nil, alignment: .bottomLeading)
             }

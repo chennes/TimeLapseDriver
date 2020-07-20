@@ -25,25 +25,25 @@ struct StatusView: View {
                 Toggle(isOn: $interrupted) {
                     Text("Interrupted")
                 }
-                    .onReceive(SliderSerialInterface.shared.$interrupted, perform: {
+                    .onReceive(SliderCommunicationInterface.shared.$interrupted, perform: {
                         self.interrupted = $0
                     })
                 Toggle(isOn: $autohoming) {
                     Text("Autohoming")
                 }
-                .onReceive(SliderSerialInterface.shared.$autohoming, perform: {
+                .onReceive(SliderCommunicationInterface.shared.$autohoming, perform: {
                     self.autohoming = $0
                 })
                 Toggle(isOn: $running) {
                     Text("Running")
                 }
-                .onReceive(SliderSerialInterface.shared.$running, perform: {
+                .onReceive(SliderCommunicationInterface.shared.$running, perform: {
                     self.running = $0
                 })
                 Toggle(isOn: $signaling) {
                     Text("Signaling")
                 }
-                .onReceive(SliderSerialInterface.shared.$signaling, perform: {
+                .onReceive(SliderCommunicationInterface.shared.$signaling, perform: {
                     self.signaling = $0
                 })
             }

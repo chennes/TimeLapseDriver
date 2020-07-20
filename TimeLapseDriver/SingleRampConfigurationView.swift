@@ -16,7 +16,9 @@ struct SingleRampConfigurationView: View {
         VStack {
             Text ("\(stepper.name)").font(Font.headline)
             SingleRampDisplayView().environmentObject(stepper.ramp)
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
+            Button(action: {
+                SliderCommunicationInterface.shared.setRamp(stepper: self.stepper.code, ramp: self.stepper.ramp)
+            }) {
                 Text("Update")
             }
             Divider().frame(width: 100, height: 3, alignment: .center)
@@ -25,13 +27,13 @@ struct SingleRampConfigurationView: View {
                 Button(action: {
                     let position = Int32(self.position) ?? 0
                     let moveBy = Int32(self.moveBy) ?? 0
-                    SliderSerialInterface.shared.travelToPosition(stepper: self.stepper.code, position: position-moveBy)
+                    SliderCommunicationInterface.shared.travelToPosition(stepper: self.stepper.code, position: position-moveBy)
                 }) {
                     Text("<")
                 }.frame(width: nil, height: nil, alignment: .center)
 
                 Button(action: {
-                    SliderSerialInterface.shared.stopMotion()
+                    SliderCommunicationInterface.shared.stopMotion()
                 }) {
                     Text("X")
                 }.frame(width: nil, height: nil, alignment: .center)
@@ -39,7 +41,7 @@ struct SingleRampConfigurationView: View {
                 Button(action: {
                     let position = Int32(self.position) ?? 0
                     let moveBy = Int32(self.moveBy) ?? 0
-                    SliderSerialInterface.shared.travelToPosition(stepper: self.stepper.code, position: position+moveBy)
+                    SliderCommunicationInterface.shared.travelToPosition(stepper: self.stepper.code, position: position+moveBy)
                 }) {
                     Text(">")
                 }.frame(width: nil, height: nil, alignment: .center)

@@ -28,17 +28,8 @@ class StepperMotor: ObservableObject, Identifiable {
     @Published private(set) var state: StepperState = .freewheeling
     private var stateSubscription: AnyCancellable?
     
-    @Published var target: Int32 = 0 {
-        didSet {
-            // Push this out to the actual stepper
-        }
-    }
-    @Published var ramp = Ramp() {
-        didSet {
-            // Push this out to the actual stepper
-        }
-    }
-  
+    @Published var target: Int32 = 0
+    @Published var ramp:Ramp
     @Published var isMoving: Bool = false
     
     var name: String {
@@ -56,24 +47,19 @@ class StepperMotor: ObservableObject, Identifiable {
     
     init (code: StepperMotorCode) {
         self.code = code
-        switch self.code {
-        case .slider:
-            positionSubscription = SliderSerialInterface.shared.$sliderPosition.assign(to: \StepperMotor.position, on: self)
-            velocitySubscription = SliderSerialInterface.shared.$sliderSpeed.assign(to: \StepperMotor.velocity, on: self)
-            stateSubscription = SliderSerialInterface.shared.$sliderState.assign(to: \StepperMotor.state, on: self)
-        case .pan:
-            positionSubscription = SliderSerialInterface.shared.$panPosition.assign(to: \StepperMotor.position, on: self)
-            velocitySubscription = SliderSerialInterface.shared.$panSpeed.assign(to: \StepperMotor.velocity, on: self)
-            stateSubscription = SliderSerialInterface.shared.$panState.assign(to: \StepperMotor.state, on: self)
-        case .tilt:
-            positionSubscription = SliderSerialInterface.shared.$tiltPosition.assign(to: \StepperMotor.position, on: self)
-            velocitySubscription = SliderSerialInterface.shared.$tiltSpeed.assign(to: \StepperMotor.velocity, on: self)
-            stateSubscription = SliderSerialInterface.shared.$tiltState.assign(to: \StepperMotor.state, on: self)
-        case .focus:
-            positionSubscription = SliderSerialInterface.shared.$focusPosition.assign(to: \StepperMotor.position, on: self)
-            velocitySubscription = SliderSerialInterface.shared.$focusSpeed.assign(to: \StepperMotor.velocity, on: self)
-            stateSubscription = SliderSerialInterface.shared.$focusState.assign(to: \StepperMotor.state, on: self)
-        }
+        ramp = DefaultRamp[code] ?? Ramp()
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidInitializeSlider(_:)), name: .didInitializeSlider, object: nil)
+        
+        positionSubscription = SliderCommunicationInterface.shared.positionPublisher[Int(code.rawValue)].assign(to: \StepperMotor.position, on: self)
+        velocitySubscription = SliderCommunicationInterface.shared.velocityPublisher[Int(code.rawValue)].assign(to: \StepperMotor.velocity, on: self)
+        stateSubscription = SliderCommunicationInterface.shared.statePublisher[Int(code.rawValue)].sink(receiveValue: { (value:UInt8) in
+            self.state = StepperState(rawValue:value) ?? .holding
+        })
+
+    }
+    
+    @objc fileprivate func onDidInitializeSlider (_ notification: Notification) {
+        SliderCommunicationInterface.shared.setRamp(stepper: self.code, ramp: self.ramp)
     }
 
 }
