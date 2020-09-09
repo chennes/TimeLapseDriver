@@ -44,7 +44,11 @@ struct ContentView: View {
         return VStack{
             VSplitView{
                 VStack {
-                    GlobalControlView().environmentObject(master)
+                    if master.currentState != .idle && master.currentState != .live {
+                        RunStatusView().environmentObject(master)
+                    } else {
+                        GlobalControlView().environmentObject(master)
+                    }
                     KeyframeEditView().environmentObject(master)
                 }.padding(.bottom, 12)
                 VStack{

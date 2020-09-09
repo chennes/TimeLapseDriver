@@ -40,6 +40,7 @@ final class MasterController: ObservableObject
     
     @Published var timelapse: Bool = true
     @Published var numTimelapseFrames: Int = 150 // e.g. five seconds at 30fps
+    @Published var timeBetweenFrames:Float = 0.0
     @Published var steppers:[StepperMotor] = [
         StepperMotor(code:.slider),
         StepperMotor(code:.pan),
@@ -86,12 +87,17 @@ final class MasterController: ObservableObject
     private var timelapseMoveTimer: Timer?
     private var timelapseSettleTimer: Timer?
     private var statusUpdateTimer: Timer?
+    private var countdownTimer: Timer?
     @Published var currentTimelapseFrame: Int = 0
     private var timelapseFrames:[Keyframe] = []
     
     
     private var continuousMoveTimer: Timer?
     @Published var currentContinuousFrame: Int = 0
+    
+    @Published var eta:Date = Date()
+    private var nextFrameAt:Date = Date()+10
+    @Published var timeToNextFrame:Int = 0
     
     var controllers:[GCController] = []
     var selectedController:GCExtendedGamepad?
@@ -124,6 +130,7 @@ final class MasterController: ObservableObject
         timelapseSettleTimer?.invalidate()
         statusUpdateTimer?.invalidate()
         continuousMoveTimer?.invalidate()
+        countdownTimer?.invalidate()
     }
     
     func goToPosition(_ position:[Int32], in time:Double) {
@@ -136,6 +143,7 @@ final class MasterController: ObservableObject
     }
     
     func run () {
+        self.eta = Date() + TimeInterval(exactly: keyframes.last?.time ?? 0.0)!
         if timelapse {
             runTimelapse(totalFrames: numTimelapseFrames)
         } else {
@@ -145,6 +153,9 @@ final class MasterController: ObservableObject
     }
     
     func runTimelapse (totalFrames:Int) {
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: {timer in
+            self.updateTimeToNextFrame()
+        })
         configureTimelapse()
         stateSequence.append(.timelapse)
         nextState()
@@ -200,7 +211,13 @@ final class MasterController: ObservableObject
             currentTimelapseFrame += 1
             if currentTimelapseFrame < timelapseFrames.count-1 {
                 stateSequence.append(.timelapse)
-                let deltaT = timelapseFrames[currentTimelapseFrame].time - timelapseFrames[currentTimelapseFrame-1].time
+                var deltaT = timelapseFrames[currentTimelapseFrame].time - timelapseFrames[currentTimelapseFrame-1].time
+                // Clamp deltaT to at least a second and a half
+                if deltaT < 1.5 {
+                    deltaT = 1.5
+                }
+                timeBetweenFrames = deltaT
+                nextFrameAt = Date() + TimeInterval(deltaT)
                 timelapseMoveTimer = Timer.scheduledTimer(withTimeInterval: Double(deltaT), repeats: false, block: { timer in
                     self.nextState()
                 })
@@ -212,12 +229,18 @@ final class MasterController: ObservableObject
             let nextPosition:[Int32] = [nextSliderPosition, nextPanPosition, nextTiltPosition, nextFocusPosition]
             timelapseSettleTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {timer in
                 self.stateSequence.insert(.waiting, at: 0)
-                self.runCoordinatedMotionToPosition(position:nextPosition)
+                // Take 90% of the available time to get to the next position: most of the time this should be quite slow
+                self.runCoordinatedMotionToPosition(nextPosition, in: 0.9*(Double(self.timeBetweenFrames)-1.0))
             })
         case .waiting:
             // During a wait, we do nothing: nextState() will be called again from a timer of some kind (well, it should be, and if it's not, it's a bug!)
             break
         }
+        currentState = nextState
+    }
+    
+    fileprivate func updateTimeToNextFrame() {
+        timeToNextFrame = Int(round(DateInterval(start: Date(), end: nextFrameAt).duration))
     }
     
     
@@ -427,6 +450,8 @@ final class MasterController: ObservableObject
         
         if maxTime > seconds {
             print ("Requested time for travel was not long enough to complete the motion!")
+            print ("Requested time: \(seconds) seconds")
+            print ("Required time: \(maxTime) seconds")
             return
         }
 
@@ -450,7 +475,7 @@ final class MasterController: ObservableObject
         }
         stop = false
 
-        // Calls to the SSI are basically asynchronous by construction, since they just transmit a command
+        // Calls to the SCI are basically asynchronous by construction, since they just transmit a command
         // over the Serial connection and then return, without waiting for the command to do anything
         // except acknowledge receipt.
         SliderCommunicationInterface.shared.travelToPosition(position:position)
@@ -487,6 +512,7 @@ final class MasterController: ObservableObject
 
         // Now we have to wait for this to actually happen...
         var working = true;
+        sleep(500)
         while (working) {
             if SliderCommunicationInterface.shared.statePublisher[0].value == StepperState.holding.rawValue &&
                 SliderCommunicationInterface.shared.statePublisher[1].value == StepperState.holding.rawValue &&
@@ -498,59 +524,8 @@ final class MasterController: ObservableObject
             }
         }
     }
-//
-//    fileprivate func nextState () {
-//
-//        if let pinfo = activity {
-//            ProcessInfo().endActivity(pinfo)
-//            activity = nil
-//        }
-//
-//        // Set the ramps back in case they got changed (for example, by runCoordinated...)
-//        SliderCommunicationInterface.shared.setRamp(stepper: .slider, ramp: steppers[0].ramp)
-//        SliderCommunicationInterface.shared.setRamp(stepper: .pan, ramp: steppers[1].ramp)
-//        SliderCommunicationInterface.shared.setRamp(stepper: .tilt, ramp: steppers[2].ramp)
-//        SliderCommunicationInterface.shared.setRamp(stepper: .focus, ramp: steppers[3].ramp)
-//
-//        if stateSequence.first == nil {
-//            currentState = .idle
-//        } else {
-//            currentState = stateSequence.removeFirst()
-//            switch currentState {
-//            case .idle:
-//                print ("Idle found on the state stack.")
-//            case .continuous:
-//                print ("")
-//            case .live:
-//                liveMode = true
-//            case .traveling:
-//                print ("Traveling found on the state stack, but nowhere to go!")
-//            case .zeroing:
-//                returnToZero()
-//            case .timelapse:
-//                print ("Returning to timelapse hold mode")
-//            }
-//
-//            statusUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { timer in
-//                self.waitForHold();
-//            })
-//        }
-//    }
-//
-//    func run () {
-//        // Set up the run stack:
-//        zeroWithBacklashProtection()
-//        if timelapse {
-//            stateSequence.append(.timelapse)
-//        } else {
-//            stateSequence.append(.continuous)
-//        }
-//
-//        if currentState == .idle {
-//            nextState()
-//        }
-//    }
-//
+
+    
     func getPositionFollowingPanFrom(sliderPosition:Int32, startDistanceToTarget:Double, endDistanceToTarget:Double, totalSlideSteps:Int32, totalPanSteps:Int32) -> Int32 {
 
         // First construct our base triangle with sides ABC and opposing angles abc. Use the law of sines to determine the angles from the sides.
@@ -607,250 +582,5 @@ final class MasterController: ObservableObject
         }
 
         return position
-
     }
-//
-//    fileprivate func waitForZero() {
-//        let allZero = SliderCommunicationInterface.shared.positionPublisher.allSatisfy({(val:CurrentValueSubject<Int32, Never>) -> Bool in return val.value == 0 })
-//        if (allZero) {
-//            print ("All zero passed")
-//            // We are at zero: go to the next step
-//            if timelapse {
-//                runTimelapse()
-//            } else {
-//                runSingleMotion()
-//            }
-//
-//        } else if stop {
-//            running = false
-//            // Don't reset the timer, just bail out
-//        } else {
-//            statusUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { timer in
-//                self.waitForZero();
-//            })
-//        }
-//    }
-//
-//    fileprivate func runTimelapse() {
-//        if keyframes.isEmpty {
-//            print ("No keyframes set")
-//            return
-//        }
-//        if keyframes.count < 2 {
-//            print ("There must be at least two keyframes")
-//            return
-//        }
-//
-//        // Construct a sequence of keyframes in between whatever frames are provided
-//        let totalTime = keyframes.last!.time
-//        let deltaT = totalTime / Float(numTimelapseFrames) // Assumed constant for the time being
-//
-//        // Sanity checks
-//        if deltaT < 1.0 {
-//            print ("It is unlikely that the camera will be in position in time to take this number of keyframes. Bailing...")
-//            cancel()
-//            return
-//        }
-//
-//        if deltaT > 14.5 * 60 { // Technically it's a 15 minute timer, but let's add some safety margin
-//            print ("The camera will stop looking for IR signals before the next keyframe is triggered. Bailing...")
-//            cancel()
-//            return
-//        }
-//
-//        var t:Float = 0.0
-//        var previousFrame = keyframes.first!
-//        timelapseFrames.append(previousFrame)
-//        for keyframe in keyframes.dropFirst() {
-//            // For every keyframe, figure out what fraction of the total time it represents
-//            let majorDeltaT = keyframe.time - t
-//            let keyframeFraction = majorDeltaT / totalTime
-//            let numberOfMinorFrames = Int(round(keyframeFraction * Float(numTimelapseFrames)))
-//
-//            // Calculate the per-step deltas: calculate them as floats, we will round them during the next step
-//            let deltaSlider = Float(keyframe.sliderPosition! - previousFrame.sliderPosition!) / Float(numberOfMinorFrames)
-//            let deltaPan = Float(keyframe.panPosition! - previousFrame.panPosition!) / Float(numberOfMinorFrames)
-//            let deltaTilt = Float(keyframe.tiltPosition! - previousFrame.tiltPosition!) / Float(numberOfMinorFrames)
-//            let deltaFocus = Float(keyframe.focusPosition! - previousFrame.focusPosition!) / Float(numberOfMinorFrames)
-//
-//            var subframe:Float = 0
-//            while t < keyframe.time {
-//                let sliderPosition = previousFrame.sliderPosition!+Int32(round(subframe*deltaSlider))
-//                var panPosition = previousFrame.panPosition!+Int32(round(subframe*deltaPan))
-//                let tiltPosition = previousFrame.tiltPosition!+Int32(round(subframe*deltaTilt))
-//                let focusPosition = previousFrame.focusPosition!+Int32(round(subframe*deltaFocus))
-//
-//                if (keyframe.distanceToTarget ?? 0.0) > 0.0 {
-//                    panPosition = getPositionFollowingPanFrom(sliderPosition: Int32(round(subframe*deltaSlider)), startDistanceToTarget: previousFrame.distanceToTarget ?? 0.0, endDistanceToTarget: keyframe.distanceToTarget ?? 0.0, totalSlideSteps: keyframe.sliderPosition! - previousFrame.sliderPosition!, totalPanSteps: keyframe.panPosition! - previousFrame.panPosition!)
-//                    print ("Pan position: \(panPosition)")
-//                }
-//                timelapseFrames.append(Keyframe(id: timelapseFrames.count,
-//                                                time: t,
-//                                                sliderPosition: sliderPosition,
-//                                                panPosition: panPosition,
-//                                                tiltPosition: tiltPosition,
-//                                                focusPosition: focusPosition,
-//                                                distanceToTarget: 0.0))
-//                subframe += 1.0
-//                t += deltaT
-//            }
-//            previousFrame = timelapseFrames.last!
-//        }
-//        timelapseFrames.append(keyframes.last!)
-//
-//        // OK, let's fire off a photo and then roll...
-//        activity = ProcessInfo().beginActivity(options: .userInitiated, reason: "Running timelapse")
-//        SliderCommunicationInterface.shared.takePhoto()
-//
-//        running = true
-//        stop = false
-//        nextTimelapseFrame()
-//    }
-//
-//    fileprivate func nextTimelapseFrame () {
-//        if stop {
-//            timelapseMoveTimer?.invalidate()
-//            timelapseSettleTimer?.invalidate()
-//            running = false
-//            return
-//        }
-//        // Triggered by the timelapse timer to advance to the next frame, trigger a photo, and reset the timer for the next frame.
-//        SliderCommunicationInterface.shared.takePhoto()
-//
-//        // Reset the timer for the next photo, if there is one...
-//        if currentTimelapseFrame < timelapseFrames.count-1 {
-//            let deltaT = timelapseFrames[currentTimelapseFrame+1].time - timelapseFrames[currentTimelapseFrame].time
-//            timelapseMoveTimer = Timer.scheduledTimer(withTimeInterval: Double(deltaT), repeats: false, block: { timer in
-//                self.nextTimelapseFrame();
-//            })
-//            // For now, always allow one second for the photo to be taken before moving again. Eventually this should
-//            // be configurable, obviously
-//            let nextFrame = self.timelapseFrames[self.currentTimelapseFrame+1]
-//            timelapseSettleTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { timer in
-//                self.moveToTimelapseFrame(keyframe:nextFrame);
-//            })
-//            currentTimelapseFrame += 1
-//        } else {
-//            running = false
-//            stop = true
-//        }
-//    }
-//
-//    fileprivate func moveToTimelapseFrame(keyframe:Keyframe) {
-//        if stop {
-//            timelapseMoveTimer?.invalidate()
-//            timelapseSettleTimer?.invalidate()
-//            running = false
-//            return
-//        }
-//        SliderCommunicationInterface.shared.travelToPosition(position: [keyframe.sliderPosition!,
-//                                                                        keyframe.panPosition!,
-//                                                                        keyframe.tiltPosition!,
-//                                                                        keyframe.focusPosition!])
-//    }
-//
-//    fileprivate func runSingleMotion() {
-//        // For this we need to recalculate all of the ramps. For simplicity we assume that
-//        // vstart = vstop = 0, and we will set v1 > vmax so that it's out of play entirely.
-//        // That leaves a simple linear ramp. We will further assume that the deceleration at
-//        // the end is irrelevant, and the stop essentially instantaneous. Finally, we assume
-//        // that we are running at vmax for the vast majority of the time, so we can calculate
-//        // the appropriate vmax just by dividing the distance by the time for each stepper.
-//
-//        var vMaxU = [0.0,0.0,0.0,0.0]
-//        vMaxU[0] = Double( abs(Float(keyframes.last?.sliderPosition ?? 0) / (keyframes.last?.time ?? 1.0)) )
-//        vMaxU[1] = Double( abs(Float(keyframes.last?.panPosition ?? 0) / (keyframes.last?.time ?? 1.0)) )
-//        vMaxU[2] = Double( abs(Float(keyframes.last?.tiltPosition ?? 0) / (keyframes.last?.time ?? 1.0)) )
-//        vMaxU[3] = Double( abs(Float(keyframes.last?.focusPosition ?? 0) / (keyframes.last?.time ?? 1.0)) )
-//
-//        var aMaxU = [steppers[0].ramp.accelerationInRealUnits(a: steppers[0].ramp.amax),
-//                     steppers[1].ramp.accelerationInRealUnits(a: steppers[1].ramp.amax),
-//                     steppers[2].ramp.accelerationInRealUnits(a: steppers[2].ramp.amax),
-//                     steppers[3].ramp.accelerationInRealUnits(a: steppers[3].ramp.amax)]
-//
-//        // We want these all to accelerate such that they arrive at vmax at the same time, which is driven by
-//        // the one that takes the longest to achieve that.
-//        var timeToVMax = 0.0
-//        for i in 0..<4 {
-//            timeToVMax = max(timeToVMax, Double(vMaxU[i]) / Double(aMaxU[i]))
-//        }
-//
-//        print ("timeToVMax = \(timeToVMax)")
-//
-//        // Now go back and recalculate the amaxes such that they all take timeToVMax to get there...
-//        for i in 0..<4 {
-//            aMaxU[i] = vMaxU[i] / timeToVMax
-//        }
-//
-//        // Finally, convert both the velocities and accelerations into Trinamic internal units for sending to the chip:
-//        let ramps = [Ramp(), Ramp(), Ramp(), Ramp()]
-//        for i in 0..<4 {
-//            ramps[i].vmax = ramps[i].velocityInTrinamicUnits(v:vMaxU[i])
-//            ramps[i].v1 = ramps[i].velocityInTrinamicUnits(v:vMaxU[i])
-//            ramps[i].amax = ramps[i].accelerationInTrinamicUnits(a:aMaxU[i])
-//            ramps[i].dmax = ramps[i].accelerationInTrinamicUnits(a:aMaxU[i])
-//            ramps[i].a1 = ramps[i].accelerationInTrinamicUnits(a:aMaxU[i])
-//            ramps[i].d1 = ramps[i].accelerationInTrinamicUnits(a:aMaxU[i])
-//            print ("Ramp \(i) vMax = \(ramps[i].vmax)")
-//        }
-//
-//        // Set the ramps:
-//        if ramps[0].vmax > 0 {
-//            SliderCommunicationInterface.shared.setRamp(stepper: .slider, ramp: ramps[0])
-//        }
-//        if ramps[1].vmax > 0 {
-//            SliderCommunicationInterface.shared.setRamp(stepper: .pan, ramp: ramps[1])
-//        }
-//        if ramps[2].vmax > 0 {
-//            SliderCommunicationInterface.shared.setRamp(stepper: .tilt, ramp: ramps[2])
-//        }
-//        if ramps[3].vmax > 0 {
-//            SliderCommunicationInterface.shared.setRamp(stepper: .focus, ramp: ramps[3])
-//        }
-//
-//        // Wait two seconds to give the serial communications a chance to complete: this makes debugging a bit easier...
-//        statusUpdateTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { timer in
-//            self.triggerSingleMotion();
-//        })
-//    }
-//
-//    fileprivate func triggerSingleMotion() {
-//        // Now, we're ready to actually run our motion, which should take APPROXIMATELY the amount of time we allowed for it
-//        running = true
-//        stop = false
-//        let position = [keyframes.last?.sliderPosition ?? SliderCommunicationInterface.shared.positionPublisher[0].value,
-//                        keyframes.last?.panPosition ?? SliderCommunicationInterface.shared.positionPublisher[1].value,
-//                        keyframes.last?.tiltPosition ?? SliderCommunicationInterface.shared.positionPublisher[2].value,
-//                        keyframes.last?.focusPosition ?? SliderCommunicationInterface.shared.positionPublisher[3].value]
-//        SliderCommunicationInterface.shared.travelToPosition(position:position)
-//
-//        // Monitor the process and reset the ramps when it's done:
-//        statusUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { timer in
-//            self.monitorSingleMotion();
-//        })
-//    }
-//
-//    fileprivate func monitorSingleMotion() {
-//        let allHolding = SliderCommunicationInterface.shared.statePublisher.allSatisfy( {(state:CurrentValueSubject<UInt8, Never>) -> Bool in
-//            return state.value == StepperState.holding.rawValue
-//        } )
-//        if stop || allHolding {
-//            for i in 0..<4 {
-//                SliderCommunicationInterface.shared.setRamp(stepper: StepperMotorCode(rawValue: UInt8(i))!, ramp: steppers[i].ramp)
-//            }
-//            running = false
-//            if let pinfo = activity {
-//                ProcessInfo().endActivity(pinfo)
-//                activity = nil
-//            }
-//        } else {
-//            statusUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { timer in
-//                self.monitorSingleMotion();
-//            })
-//        }
-//    }
-//
-//    func cancel () {
-//        stop = true
-//    }
 }
