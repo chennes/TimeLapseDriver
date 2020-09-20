@@ -62,12 +62,12 @@ enum StepperMotorCode:UInt8 {
 }
 
 enum StepperState:UInt8 {
-    case holding = 0
-    case running = 1
-    case freewheeling = 2
-    case homingup = 3
-    case homingdown = 4
-    case homingreturn = 5
+    case holding = 1
+    case running = 2
+    case freewheeling = 3
+    case homingup = 4
+    case homingdown = 5
+    case homingreturn = 6
 }
 
 extension Notification.Name {
@@ -248,7 +248,14 @@ final class SliderCommunicationInterface : NSObject, ObservableObject, ORSSerial
     }
     
     deinit {
-        serialPort?.close()
+        if connectVia == .usb {
+            let command = "!RESET;".data(using: .ascii)!
+            serialPort?.send(command);
+        } else if connectVia == .bluetooth {
+            bleWrapper?.sendCommand(command: .reset)
+        } else {
+            print ("Dummy call: RESET")
+        }
     }
     
     /// Instruct the ESP32 to perform a software reset, rebooting. After three seconds, try to resetablish the serial connection.
