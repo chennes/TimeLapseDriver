@@ -26,6 +26,12 @@ final class MasterController: ObservableObject
         case waiting
     }
     
+    enum RunType {
+        case once
+        case bounce
+        case timelapse
+    }
+    
     /**
      The current state of the system.
      */
@@ -38,7 +44,7 @@ final class MasterController: ObservableObject
     private var stateSequence:[MasterState] = []
     private var travelPositions:[(position:[Int32],time:Double)] = []
     
-    @Published var timelapse: Bool = true
+    @Published var runType: RunType = .timelapse
     @Published var numTimelapseFrames: Int = 150 // e.g. five seconds at 30fps
     @Published var timeBetweenFrames:Float = 0.0
     @Published var steppers:[StepperMotor] = [
@@ -93,6 +99,7 @@ final class MasterController: ObservableObject
     
     
     private var continuousMoveTimer: Timer?
+    private var continuousIncrementer: Int = 1
     @Published var currentContinuousFrame: Int = 0
     
     @Published var eta:Date = Date()
@@ -144,7 +151,7 @@ final class MasterController: ObservableObject
     
     func run () {
         self.eta = Date() + TimeInterval(exactly: keyframes.last?.time ?? 0.0)!
-        if timelapse {
+        if runType == .timelapse {
             runTimelapse(totalFrames: numTimelapseFrames)
         } else {
             currentContinuousFrame = 0
@@ -163,7 +170,7 @@ final class MasterController: ObservableObject
     
     func runContinuous () {
         currentContinuousFrame = 0
-        stateSequence.append(.timelapse)
+        stateSequence.append(.continuous)
         nextState()
     }
     
@@ -189,17 +196,35 @@ final class MasterController: ObservableObject
                 print ("No position to travel to!")
             }
         case .continuous:
-            currentContinuousFrame += 1
+            currentContinuousFrame += continuousIncrementer
             let nextSliderPosition = keyframes[currentContinuousFrame].sliderPosition  ?? Int32(0)
             let nextPanPosition = keyframes[currentContinuousFrame].panPosition  ?? Int32(0)
             let nextTiltPosition = keyframes[currentContinuousFrame].tiltPosition  ?? Int32(0)
             let nextFocusPosition = keyframes[currentContinuousFrame].focusPosition  ?? Int32(0)
             let nextPosition:[Int32] = [nextSliderPosition, nextPanPosition, nextTiltPosition, nextFocusPosition]
-            let deltaT = Double(keyframes[currentContinuousFrame].time - keyframes[currentContinuousFrame-1].time)
+            let deltaT = fabs(Double(keyframes[currentContinuousFrame].time - keyframes[currentContinuousFrame-continuousIncrementer].time))
             
             runCoordinatedMotionToPosition(nextPosition, in: deltaT)
             
-            if currentContinuousFrame < keyframes.count-1 {
+            var scheduleNext = false
+            if runType == .once {
+                if currentContinuousFrame < keyframes.count-1 {
+                    scheduleNext = true
+                }
+            } else if runType == .bounce {
+                // Detect the endpoints and reverse the incrementer if we just hit one from the correct direction
+                if currentContinuousFrame == 0 && continuousIncrementer == -1 {
+                    print ("Bouncing at the lower bound")
+                    continuousIncrementer = 1
+                } else if currentContinuousFrame == keyframes.count - 1 {
+                    print ("Bouncing at the upper bound")
+                    continuousIncrementer = -1
+                }
+                
+                scheduleNext = true
+            }
+                
+            if scheduleNext {
                 stateSequence.append(.continuous)
                 continuousMoveTimer = Timer.scheduledTimer(withTimeInterval: deltaT, repeats: false, block: { timer in
                     self.nextState()

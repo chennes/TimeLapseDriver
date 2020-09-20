@@ -26,14 +26,16 @@ struct RunStatusView: View {
         
         return GroupBox(label: Text("Run Status").font(Font.title)) {
             VStack {
-                if master.timelapse {
+                if master.runType == .timelapse {
                     Text("Running timelapse...")
                     Text("Frame \(master.currentTimelapseFrame) of \(master.numTimelapseFrames)")
                     Text("Time between frames: \(master.timeBetweenFrames) seconds")
                     Text("Completion time: \( dateFormatter.string(from:master.eta) ) (\(intervalFormatter.string(from: now, to:endTime)!))")
                     Text("Next frame in \(master.timeToNextFrame) seconds")
+                } else if master.runType == .bounce {
+                    Text("Running continuous (bounce mode)...")
                 } else {
-                    Text("Running continuous...")
+                    Text("Running one shot...")
                 }
             }
         }

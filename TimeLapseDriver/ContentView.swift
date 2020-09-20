@@ -39,7 +39,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        let timelapse = Binding<Bool>(get: {self.master.timelapse}, set: {self.master.timelapse = $0})
+        let runType = Binding<MasterController.RunType>(get: {self.master.runType}, set: {self.master.runType = $0})
         let numTimelapseFrames = Binding<Int>(get: {self.master.numTimelapseFrames}, set: {self.master.numTimelapseFrames = $0})
         return VStack{
             VSplitView{
@@ -68,17 +68,22 @@ struct ContentView: View {
                         }
                     }
                     HStack{
+                        Picker(selection: runType, label: Text("Run type:")) {
+                            Text("One Shot").tag(MasterController.RunType.once)
+                            Text("Timelapse").tag(MasterController.RunType.timelapse)
+                            Text("Bounce").tag(MasterController.RunType.bounce)
+                        }.pickerStyle(RadioGroupPickerStyle())
+
+                        TextField("150", value: numTimelapseFrames, formatter: ContentView.integerFormatter).frame(width: 70, height: nil, alignment: .bottomLeading).disabled(runType.wrappedValue != .timelapse)
+                        Text("frames").disabled(runType.wrappedValue != .timelapse)
+                    }
+                    HStack{
                         Button(action: {
                             self.master.keyframes.removeAll()
                         }) {
                         Text("Clear all")
                         }
                         Spacer()
-                        Toggle(isOn: timelapse) {
-                            Text("Timelapse")
-                        }
-                        TextField("150", value: numTimelapseFrames, formatter: ContentView.integerFormatter).frame(width: 70, height: nil, alignment: .bottomLeading).disabled(!timelapse.wrappedValue)
-                        Text("frames").disabled(!timelapse.wrappedValue)
 
                         Button(action: {
                             self.master.run()
@@ -94,7 +99,7 @@ struct ContentView: View {
                     }
                 }
             }
-            }.frame(width: 500  , height: 590, alignment: .bottom).padding()
+            }.frame(width: 500  , height: 690, alignment: .bottom).padding()
     }
 }
 
