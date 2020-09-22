@@ -144,7 +144,7 @@ final class MasterController: ObservableObject
         if currentState != .idle {
             cancel()
         }
-        stateSequence.append(.traveling)
+        stateSequence.insert(.traveling, at: 0)
         travelPositions.append((position,time))
         nextState()
     }
@@ -152,26 +152,29 @@ final class MasterController: ObservableObject
     func run () {
         self.eta = Date() + TimeInterval(exactly: keyframes.last?.time ?? 0.0)!
         if runType == .timelapse {
-            runTimelapse(totalFrames: numTimelapseFrames)
+            setupTimelapseRun(totalFrames: numTimelapseFrames)
         } else {
-            currentContinuousFrame = 0
-            runContinuous()
+            setupContinuousRun()
         }
+        // Run to the first frame to get us set up...
+        runCoordinatedMotionToPosition(position: [keyframes[0].sliderPosition ?? 0,
+                                                  keyframes[0].panPosition ?? 0,
+                                                  keyframes[0].tiltPosition ?? 0,
+                                                  keyframes[0].focusPosition ?? 0])
     }
     
-    func runTimelapse (totalFrames:Int) {
+    func setupTimelapseRun (totalFrames:Int) {
         countdownTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: {timer in
             self.updateTimeToNextFrame()
         })
         configureTimelapse()
         stateSequence.append(.timelapse)
-        nextState()
     }
     
-    func runContinuous () {
+    func setupContinuousRun () {
         currentContinuousFrame = 0
+        continuousIncrementer = 1
         stateSequence.append(.continuous)
-        nextState()
     }
     
     
@@ -179,7 +182,12 @@ final class MasterController: ObservableObject
      This is the function that actually figures out, from the current state and the upcoming state, what actions need to be taken to get to that state.
      */
     fileprivate func nextState() {
+        print ("State sequence:")
+        for s in stateSequence {
+            print (s)
+        }
         let nextState = stateSequence.count > 0 ? stateSequence.removeFirst() : .idle
+        
         
         switch nextState {
         case .idle:
@@ -194,8 +202,10 @@ final class MasterController: ObservableObject
                 runCoordinatedMotionToPosition (target.position, in:target.time)
             } else {
                 print ("No position to travel to!")
+                self.nextState()
             }
         case .continuous:
+            print ("Going from frame \(currentContinuousFrame) to frame \(currentContinuousFrame+continuousIncrementer) (\(keyframes.count) total frames")
             currentContinuousFrame += continuousIncrementer
             let nextSliderPosition = keyframes[currentContinuousFrame].sliderPosition  ?? Int32(0)
             let nextPanPosition = keyframes[currentContinuousFrame].panPosition  ?? Int32(0)
@@ -204,6 +214,7 @@ final class MasterController: ObservableObject
             let nextPosition:[Int32] = [nextSliderPosition, nextPanPosition, nextTiltPosition, nextFocusPosition]
             let deltaT = fabs(Double(keyframes[currentContinuousFrame].time - keyframes[currentContinuousFrame-continuousIncrementer].time))
             
+            stateSequence.append(.waiting)
             runCoordinatedMotionToPosition(nextPosition, in: deltaT)
             
             var scheduleNext = false
@@ -495,6 +506,18 @@ final class MasterController: ObservableObject
             ramp.append(steppers[i].ramp.copy() as! Ramp)
             if factor[i] > 0 {
                 ramp[i].vmax = UInt32(factor[i] * Double(ramp[i].vmax))
+                var counter = 0;
+                let maxIterations = 2; // Try additional iterations of the scaling to try to get as close as possible to the requested runtime
+                while counter < maxIterations {
+                    counter += 1
+                    let tt = ramp[i].getTravelTime(distance: distance[i])
+                    print ("Travel time prediction: \(tt.0)")
+                    let f = tt.0/seconds
+                    ramp[i].vmax = UInt32(f * Double(ramp[i].vmax))
+                }
+                let tt = ramp[i].getTravelTime(distance: distance[i])
+                print ("Travel time prediction: \(tt.0)")
+                
             }
             SliderCommunicationInterface.shared.setRamp(stepper: StepperMotorCode(rawValue: UInt8(i))!, ramp: ramp[i])
         }
@@ -503,13 +526,16 @@ final class MasterController: ObservableObject
         // Calls to the SCI are basically asynchronous by construction, since they just transmit a command
         // over the Serial connection and then return, without waiting for the command to do anything
         // except acknowledge receipt.
+        print ("Traveling from \([SliderCommunicationInterface.shared.positionPublisher[0].value,SliderCommunicationInterface.shared.positionPublisher[1].value,SliderCommunicationInterface.shared.positionPublisher[2].value,SliderCommunicationInterface.shared.positionPublisher[3].value]) to \(position)")
         SliderCommunicationInterface.shared.travelToPosition(position:position)
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else {
                 return
             }
-            self.runCoordinatedMotionToPositionDispatch()
+            print ("Running dispatch")
+            self.runCoordinatedMotionToPositionDispatch(expectedTime:maxTime)
             DispatchQueue.main.async { [weak self] in
+                print ("Dispatch complete")
                 self?.nextState()
             }
         }
@@ -531,18 +557,18 @@ final class MasterController: ObservableObject
 
     }
 
-    func runCoordinatedMotionToPositionDispatch () {
+    func runCoordinatedMotionToPositionDispatch (expectedTime:Double) {
 
         activity = ProcessInfo().beginActivity(options: .idleSystemSleepDisabled, reason: "Running Camera Slider")
 
         // Now we have to wait for this to actually happen...
         var working = true;
-        sleep(500)
+        usleep(useconds_t(expectedTime * 990000.0)) // Sleep for ALMOST the whole time, but start checking a little early...
         while (working) {
             if SliderCommunicationInterface.shared.statePublisher[0].value == StepperState.holding.rawValue &&
-                SliderCommunicationInterface.shared.statePublisher[1].value == StepperState.holding.rawValue &&
-                SliderCommunicationInterface.shared.statePublisher[2].value == StepperState.holding.rawValue &&
-                SliderCommunicationInterface.shared.statePublisher[3].value == StepperState.holding.rawValue {
+               SliderCommunicationInterface.shared.statePublisher[1].value == StepperState.holding.rawValue &&
+               SliderCommunicationInterface.shared.statePublisher[2].value == StepperState.holding.rawValue &&
+               SliderCommunicationInterface.shared.statePublisher[3].value == StepperState.holding.rawValue {
                 working = false;
             } else if stop {
                 working = false
