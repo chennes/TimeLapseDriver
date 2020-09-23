@@ -169,7 +169,7 @@ class BLEWrapper: NSObject {
     func timeout () {
         print ("BLE Command timed out")
         error = "Command timed out."
-        readyForCommand = true
+        processCommandBuffer()
     }
     
 }
@@ -357,6 +357,7 @@ extension BLEWrapper: CBPeripheralDelegate {
             } else {
                 self.error = "None, BLE is OK"
             }
+            //print ("Response recieved, BLE ready for next command")
             readyForCommand = true
             if communicationTimeout?.isValid ?? false {
                 communicationTimeout?.invalidate()
