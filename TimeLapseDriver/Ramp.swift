@@ -91,7 +91,11 @@ final class Ramp: ObservableObject, NSCopying {
                 factor = 100.0
                 print ("Bad failure - factor too large!")
             }
-            let newVMax = UInt32(factor * Double(newRamp.vmax))
+            var newVMax = UInt32(factor * Double(newRamp.vmax))
+            if newVMax <= newRamp.vstop {
+                print ("Limiting vMax to at least vStop+1")
+                newVMax = newRamp.vstop + 1
+            }
             print ("New vMax: \(newVMax)\n")
             newRamp.vmax = newVMax
         }
