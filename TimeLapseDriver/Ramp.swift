@@ -73,6 +73,31 @@ final class Ramp: ObservableObject, NSCopying {
         return UInt32(abs(a / factor))
     }
     
+    static func createRequiredRamp(from startingRamp: Ramp, toTravel: UInt32, inSeconds: Double, maxIterations: Int = 3) -> Ramp {
+        let newRamp = startingRamp.copy() as! Ramp
+        var counter = 0;
+        var factor = 0.0
+        while counter < maxIterations && fabs(factor-1.0) > 0.01 {
+            counter += 1
+            let tt = newRamp.getTravelTime(distance: toTravel)
+            print ("Travel time prediction: \(tt.0)")
+            factor = tt.0/inSeconds
+            if (factor > 10) {
+                print ("Base tt was \(tt), but wanted \(inSeconds), so factor is \(factor)")
+            }
+            print ("Speedup factor: \(factor)")
+            
+            if factor * Double(newRamp.vmax) > Double(UInt32.max) {
+                factor = 100.0
+                print ("Bad failure - factor too large!")
+            }
+            let newVMax = UInt32(factor * Double(newRamp.vmax))
+            print ("New vMax: \(newVMax)\n")
+            newRamp.vmax = newVMax
+        }
+        return newRamp
+    }
+    
     /**
      For the given six-stage velocity ramp this object represents, determine the time it will take to travel a given number of microsteps.
      */
@@ -82,8 +107,11 @@ final class Ramp: ObservableObject, NSCopying {
             return (0.0,.normal)
         }
         
+        // If vMax < v1, v1 is never really used, we cap at vMax
+        let v1Actual = min(v1, vmax)
+        
         let vstartu = velocityInRealUnits(v:vstart)
-        let v1u = velocityInRealUnits(v:v1)
+        let v1u = velocityInRealUnits(v:v1Actual)
         let vmaxu = velocityInRealUnits(v:vmax)
         let vstopu = velocityInRealUnits(v:vstop)
         
@@ -109,13 +137,55 @@ final class Ramp: ObservableObject, NSCopying {
         if dist1+dist2+dist4+dist5 > Double(distance) {
             // Nope: so we need to figure out where the stepper is going to stop the acceleration to switch to deceleration
             if dist1+dist5 > Double(distance) {
-                // We never make it out of the first acceleration phase. Just take a quick estimate, we can do the real math later
-                let tActual = (t1 + t5) * (dist1+dist5) / Double(distance)
+                // We never make it out of the first acceleration phase. This case requires a quadratic equation to solve for t1,
+                // which we can then use to relate to t5:
+                
+                // For convenience, define a couple of constants:
+                let Df = (vstartu-vstopu)/d1u
+                let Af = a1u/d1u
+                
+                // Now our quadratic terms (for v1)
+                let A = 0.5*a1u + 0.5*Af*a1u
+                let B = vstartu + Af*vstopu + 0.5*vstartu+0.5*Df*a1u + 0.5*Af*vstartu
+                let C = Df*vstopu + 0.5*Df*vstartu - Double(distance)
+                
+                // Finally, get our two possible values for t1:
+                let sqrtTerm = B*B-4*A*C
+                if sqrtTerm <= 0 {
+                    print ("No real solutions! This distance cannot be achieved with the given ramp.")
+                    return (0,.phase1)
+                }
+                let t1A = (-B + sqrt(sqrtTerm)) / (2*A)
+                let t1B = (-B - sqrt(sqrtTerm)) / (2*A)
+                let t1Actual = max(t1A, t1B)
+                let t5Actual = (t1Actual*a1u + vstartu - vstopu) / d1u
+                let tActual = t1Actual + t5Actual
+                
                 return (tActual, .phase1)
                 
             } else {
-                let tActual = t1 + t5 + (t2 + t4) * (dist1+dist2+dist4+dist5) / Double(distance)
-                // We make it into the second acceleration phase.
+                // We make it into the second acceleration phase: we know how long it took to do that, and how far we got doing it,
+                // so now it reduces to the same problem as segment 1, but with a different start and end velocity. It's a bit
+                // simpler because vStart and vStop are equal in this case (to v1), so the Df term drops out.
+                
+                let Af = amaxu/dmaxu
+                
+                // Now our quadratic terms (for v2)
+                let A = 0.5*amaxu + 0.5*Af*amaxu
+                let B = v1u + Af*v1u + 0.5*v1u + 0.5*Af*v1u
+                let C = -Double(distance) + dist1 + dist5
+                
+                let sqrtTerm = B*B-4*A*C
+                if sqrtTerm <= 0 {
+                    print ("No real solutions! This distance cannot be achieved with the given ramp.")
+                    return (0,.phase1)
+                }
+                let t2A = (-B + sqrt(sqrtTerm)) / (2*A)
+                let t2B = (-B - sqrt(sqrtTerm)) / (2*A)
+                let t2Actual = max(t2A, t2B)
+                let t4Actual = (t2Actual*amaxu) / d1u
+                let tActual = t1 + t2Actual + t4Actual + t5
+                                
                 return (tActual,.phase2)
             }
         } else {

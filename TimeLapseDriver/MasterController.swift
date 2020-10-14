@@ -164,10 +164,10 @@ final class MasterController: ObservableObject
     }
     
     func setupTimelapseRun (totalFrames:Int) {
+        configureTimelapse()
         countdownTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: {timer in
             self.updateTimeToNextFrame()
         })
-        configureTimelapse()
         stateSequence.append(.timelapse)
     }
     
@@ -243,6 +243,16 @@ final class MasterController: ObservableObject
             }
             
         case .timelapse:
+            if timeToNextFrame > 2 {
+                print ("Something went wrong, the next frame came too early. Manually waiting...")
+                stateSequence.insert(.timelapse, at:0)
+                timelapseMoveTimer?.invalidate()
+                timelapseMoveTimer = Timer.scheduledTimer(withTimeInterval: Double(timeToNextFrame), repeats: false, block: { timer in
+                    self.nextState()
+                })
+                return
+            }
+            
             SliderCommunicationInterface.shared.takePhoto()
             currentTimelapseFrame += 1
             if currentTimelapseFrame < timelapseFrames.count-1 {
@@ -253,6 +263,7 @@ final class MasterController: ObservableObject
                     deltaT = 1.5
                 }
                 timeBetweenFrames = deltaT
+                print ("Time between frames: \(deltaT)")
                 nextFrameAt = Date() + TimeInterval(deltaT)
                 timelapseMoveTimer = Timer.scheduledTimer(withTimeInterval: Double(deltaT), repeats: false, block: { timer in
                     self.nextState()
@@ -266,7 +277,10 @@ final class MasterController: ObservableObject
             timelapseSettleTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {timer in
                 self.stateSequence.insert(.waiting, at: 0)
                 // Take 90% of the available time to get to the next position: most of the time this should be quite slow
-                self.runCoordinatedMotionToPosition(nextPosition, in: 0.9*(Double(self.timeBetweenFrames)-1.0))
+                // In fact, sometimes it is TOO slow!! Let's never take more than ten seconds to get to the next position...
+                let moveTime = max(min (0.9*(Double(self.timeBetweenFrames)-1.0), 10.0),1.5)
+                print ("Move time to next timelapse position: \(moveTime) seconds")
+                self.runCoordinatedMotionToPosition(nextPosition, in: moveTime)
             })
         case .waiting:
             // During a wait, we do nothing: nextState() will be called again from a timer of some kind (well, it should be, and if it's not, it's a bug!)
@@ -276,7 +290,11 @@ final class MasterController: ObservableObject
     }
     
     fileprivate func updateTimeToNextFrame() {
-        timeToNextFrame = Int(round(DateInterval(start: Date(), end: nextFrameAt).duration))
+        if nextFrameAt <= Date() {
+            timeToNextFrame = 0
+        } else {
+            timeToNextFrame = Int(round(DateInterval(start: Date(), end: nextFrameAt).duration))
+        }
     }
     
     
@@ -348,6 +366,7 @@ final class MasterController: ObservableObject
             previousFrame = timelapseFrames.last!
         }
         timelapseFrames.append(keyframes.last!)
+        nextFrameAt = Date()
     }
     
     
@@ -471,57 +490,29 @@ final class MasterController: ObservableObject
     func returnToZero () {
         runCoordinatedMotionToPosition(position: [0,0,0,0])
     }
-
     
     func runCoordinatedMotionToPosition (_ position: [Int32], in seconds:Double) {
         currentState = .traveling
         var distance:[UInt32] = [0,0,0,0]
         var time:[Double] = [0.0,0.0,0.0,0.0]
+        
         for i in 0..<4 {
             distance[i] = UInt32(abs(SliderCommunicationInterface.shared.positionPublisher[i].value - position[i]))
+            let newRamp = Ramp.createRequiredRamp(from: DefaultRamp[StepperMotorCode(rawValue: UInt8(i))!]!, toTravel: distance[i], inSeconds: seconds)
+            SliderCommunicationInterface.shared.setRamp(stepper: StepperMotorCode(rawValue: UInt8(i))!, ramp: newRamp)
+            let tt = newRamp.getTravelTime(distance: distance[i])
             time[i] = steppers[i].ramp.getTravelTime(distance: distance[i]).0
+            print ("Travel time prediction: \(tt.0)")
         }
-
-        let maxTime = time.max() ?? 0.0
+        stop = false
         
+        let maxTime = time.max() ?? 0.0
         if maxTime > seconds {
             print ("Requested time for travel was not long enough to complete the motion!")
             print ("Requested time: \(seconds) seconds")
             print ("Required time: \(maxTime) seconds")
             return
         }
-
-        // Now calculate the speed factors to employ:
-        var factor:[Double] = [0.0,0.0,0.0,0.0]
-        for i in 0..<4 {
-            factor[i] = time[i]/seconds
-        }
-        
-        // All of those factors are one or lower, by construction, so we can use them to slow down
-        // the steppers. For now, the only thing to change is vmax, but in the future we could
-        // consider getting fancier and trying to scale the whole acceleration curve, if that proves
-        // to be needed.
-        var ramp:[Ramp] = []
-        for i in 0..<4 {
-            ramp.append(steppers[i].ramp.copy() as! Ramp)
-            if factor[i] > 0 {
-                ramp[i].vmax = UInt32(factor[i] * Double(ramp[i].vmax))
-                var counter = 0;
-                let maxIterations = 2; // Try additional iterations of the scaling to try to get as close as possible to the requested runtime
-                while counter < maxIterations {
-                    counter += 1
-                    let tt = ramp[i].getTravelTime(distance: distance[i])
-                    print ("Travel time prediction: \(tt.0)")
-                    let f = tt.0/seconds
-                    ramp[i].vmax = UInt32(f * Double(ramp[i].vmax))
-                }
-                let tt = ramp[i].getTravelTime(distance: distance[i])
-                print ("Travel time prediction: \(tt.0)")
-                
-            }
-            SliderCommunicationInterface.shared.setRamp(stepper: StepperMotorCode(rawValue: UInt8(i))!, ramp: ramp[i])
-        }
-        stop = false
 
         // Calls to the SCI are basically asynchronous by construction, since they just transmit a command
         // over the Serial connection and then return, without waiting for the command to do anything
@@ -557,7 +548,7 @@ final class MasterController: ObservableObject
 
     }
 
-    func runCoordinatedMotionToPositionDispatch (expectedTime:Double) {
+    fileprivate func runCoordinatedMotionToPositionDispatch (expectedTime:Double) {
 
         activity = ProcessInfo().beginActivity(options: .idleSystemSleepDisabled, reason: "Running Camera Slider")
 
@@ -573,6 +564,7 @@ final class MasterController: ObservableObject
             } else if stop {
                 working = false
             }
+            usleep(100)
         }
     }
 

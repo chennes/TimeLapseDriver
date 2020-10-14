@@ -75,6 +75,7 @@ extension Notification.Name {
     static let failedToOpenPort = Notification.Name("failedToOpenPort")
 }
 
+/// TODO: Consider refactoring into an actual "Interface" in the Swift sense, plus three implementation classes (Serial, BLE, and Mock)
 final class SliderCommunicationInterface : NSObject, ObservableObject, ORSSerialPortDelegate {
     
     static let shared = SliderCommunicationInterface()
@@ -164,6 +165,10 @@ final class SliderCommunicationInterface : NSObject, ObservableObject, ORSSerial
     
     var state:[UInt8] = [0,0,0,0]
     private(set) var statePublisher:[ CurrentValueSubject<UInt8, Never> ]
+    
+    // Maintain a private copy of the ramps the user has set to use when debugging without a connection to the
+    // actual hardware. They will be used to simulate the time elapsed between starting and stopping a motion.
+    private var ramps:[Ramp] = [DefaultRamp[.slider]!,DefaultRamp[.pan]!,DefaultRamp[.tilt]!,DefaultRamp[.focus]!]
     
     @Published var info:String = ""
     @Published var error:String = ""
@@ -432,6 +437,7 @@ final class SliderCommunicationInterface : NSObject, ObservableObject, ORSSerial
     }
     
     func setRamp (stepper:StepperMotorCode, ramp:Ramp) {
+        ramps[Int(stepper.rawValue)] = ramp
         if connectVia == .usb {
             let command = "!RAMP \(stepper.rawValue) \(ramp.a1) \(ramp.v1) \(ramp.amax) \(ramp.vmax) \(ramp.dmax) \(ramp.d1);".data(using: .ascii)!
             let request = ORSSerialRequest(dataToSend: command, userInfo: ["command":"ramp","stepper":stepper.rawValue], timeoutInterval: 1.5, responseDescriptor: responseDescriptor)
@@ -453,8 +459,18 @@ final class SliderCommunicationInterface : NSObject, ObservableObject, ORSSerial
         } else if connectVia == .bluetooth {
             bleWrapper?.sendCommand(command: .single, motorCode: stepper.rawValue, parameters: [position])
         } else {
+            
+            // Fake it (for testing purposes)...
+            let distance = UInt32(abs(self.positionPublisher[Int(stepper.rawValue)].value - position))
+            let expectedTime = ramps[Int(stepper.rawValue)].getTravelTime(distance: distance)
+            
+            self.statePublisher[Int(stepper.rawValue)].value = StepperState.running.rawValue
+            timer = Timer.scheduledTimer(withTimeInterval: expectedTime.0, repeats: false, block: { timer in
+                self.statePublisher[Int(stepper.rawValue)].value = StepperState.holding.rawValue
+                self.positionPublisher[Int(stepper.rawValue)].value = position
+            })
+            
             print ("Dummy call: SINGLE")
-            self.positionPublisher[Int(stepper.rawValue)].value = position
         }
     }
     
@@ -468,6 +484,9 @@ final class SliderCommunicationInterface : NSObject, ObservableObject, ORSSerial
         } else if connectVia == .bluetooth {
             bleWrapper?.sendCommand(command: .go, parameters: velocity)
         } else {
+            for i in 0..<4 {
+                self.statePublisher[i].value = StepperState.running.rawValue
+            }
             print ("Dummy call: GO")
         }
     }
@@ -481,9 +500,23 @@ final class SliderCommunicationInterface : NSObject, ObservableObject, ORSSerial
         } else if connectVia == .bluetooth {
             bleWrapper?.sendCommand(command: .goto, parameters: position)
         } else {
-            for i in 0..<4 {
-                self.positionPublisher[i].value = position[i]
+            
+            var maxTime = 0.0
+            for stepper in 0..<4 {
+                // Fake it (for testing purposes)...
+                let distance = UInt32(abs(self.positionPublisher[stepper].value - position[stepper]))
+                let expectedTime = ramps[stepper].getTravelTime(distance: distance)
+                maxTime = max(maxTime, expectedTime.0)
+                self.statePublisher[stepper].value = StepperState.running.rawValue
             }
+            
+            timer = Timer.scheduledTimer(withTimeInterval: maxTime, repeats: false, block: { timer in
+                for i in 0..<4 {
+                    self.statePublisher[i].value = StepperState.holding.rawValue
+                    self.positionPublisher[i].value = position[i]
+                }
+            })
+            
             print ("Dummy call: GOTO")
         }
     }

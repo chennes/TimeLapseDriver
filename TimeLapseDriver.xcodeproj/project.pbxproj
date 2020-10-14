@@ -9,7 +9,20 @@
 /* Begin PBXBuildFile section */
 		28354066248EB7D9002D92D0 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28354065248EB7D9002D92D0 /* StatusView.swift */; };
 		2835406A248EB905002D92D0 /* SingleStepperStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28354069248EB905002D92D0 /* SingleStepperStatusView.swift */; };
+		283F26F4252BE57500CDCB51 /* RampTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283F26F3252BE57500CDCB51 /* RampTest.swift */; };
+		283F26F9252BE5E100CDCB51 /* Ramp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288AA4D02474AF7400B440CC /* Ramp.swift */; };
+		283F26FC252BE63400CDCB51 /* DefaultRamps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289BCA6B2492889300A22D21 /* DefaultRamps.swift */; };
+		283F26FF252BE64400CDCB51 /* MasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2882609E24646D57007C04AF /* MasterController.swift */; };
+		283F2702252BE65000CDCB51 /* BLEWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C92954249472DE009E9C5B /* BLEWrapper.swift */; };
+		283F2705252BE65400CDCB51 /* StepperState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284FA25824AA682500CE5978 /* StepperState.swift */; };
+		283F2708252BE66400CDCB51 /* StepperMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2882609C24646976007C04AF /* StepperMotor.swift */; };
 		284BCFFC2467724800C929E8 /* GlobalControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284BCFFB2467724800C929E8 /* GlobalControlView.swift */; };
+		284FA25924AA682500CE5978 /* StepperState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284FA25824AA682500CE5978 /* StepperState.swift */; };
+		284FA25D24AA87C200CE5978 /* BLEStatusRampStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284FA25C24AA87C200CE5978 /* BLEStatusRampStat.swift */; };
+		284FA25F24AA87D500CE5978 /* BLEStatusDriverStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284FA25E24AA87D500CE5978 /* BLEStatusDriverStat.swift */; };
+		284FA26124AA87EA00CE5978 /* BLEStatusGlobalStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284FA26024AA87EA00CE5978 /* BLEStatusGlobalStat.swift */; };
+		284FA26324AA880A00CE5978 /* BLEStatusBoardStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284FA26224AA880A00CE5978 /* BLEStatusBoardStat.swift */; };
+		284FA26524AA881500CE5978 /* BLEStatusSystemStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284FA26424AA881500CE5978 /* BLEStatusSystemStat.swift */; };
 		287127C8247B571D00EC149E /* SingleRampConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287127C7247B571D00EC149E /* SingleRampConfigurationView.swift */; };
 		287127CC247B5E2600EC149E /* RampConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287127CB247B5E2600EC149E /* RampConfigurationView.swift */; };
 		287127CE247C1D8400EC149E /* SingleRampDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287127CD247C1D8400EC149E /* SingleRampDisplayView.swift */; };
@@ -17,20 +30,27 @@
 		2882609B24646138007C04AF /* StepperControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2882609A24646138007C04AF /* StepperControlView.swift */; };
 		2882609F24646D57007C04AF /* MasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2882609E24646D57007C04AF /* MasterController.swift */; };
 		288260A0246476CA007C04AF /* StepperMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2882609C24646976007C04AF /* StepperMotor.swift */; };
+		2884280E251BD6A500F705EB /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EDCC8C244F9B7700FB3237 /* ORSSerial.framework */; };
+		2884280F251BD6A500F705EB /* ORSSerial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 28EDCC8C244F9B7700FB3237 /* ORSSerial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		288AA4D12474AF7400B440CC /* Ramp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288AA4D02474AF7400B440CC /* Ramp.swift */; };
+		289BCA6C2492889300A22D21 /* DefaultRamps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289BCA6B2492889300A22D21 /* DefaultRamps.swift */; };
 		28A0712524631C430000EE2A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A0712424631C430000EE2A /* main.swift */; };
-		28A0712924631C630000EE2A /* SliderSerialInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */; };
+		28A0712924631C630000EE2A /* SliderCommunicationInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderCommunicationInterface.swift */; };
 		28A0712B246321620000EE2A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A0712A246321620000EE2A /* ContentView.swift */; };
+		28C92955249472DE009E9C5B /* BLEWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C92954249472DE009E9C5B /* BLEWrapper.swift */; };
+		28D353AD252F524200420CED /* MasterControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D353AC252F524200420CED /* MasterControllerTest.swift */; };
+		28DB905624C4F4D10094C257 /* SingleFrameEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB905524C4F4D10094C257 /* SingleFrameEditorView.swift */; };
+		28DB905A24C62DD70094C257 /* KeyframeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB905924C62DD70094C257 /* KeyframeRowView.swift */; };
 		28EDCC66244F9A9D00FB3237 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */; };
 		28EDCC6A244F9AA000FB3237 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC69244F9AA000FB3237 /* Assets.xcassets */; };
 		28EDCC6D244F9AA000FB3237 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC6C244F9AA000FB3237 /* Preview Assets.xcassets */; };
 		28EDCC70244F9AA000FB3237 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28EDCC6E244F9AA000FB3237 /* Main.storyboard */; };
 		28EDCC7C244F9AA000FB3237 /* TimeLapseDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC7B244F9AA000FB3237 /* TimeLapseDriverTests.swift */; };
-		28EDCC90244F9BB900FB3237 /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EDCC8C244F9B7700FB3237 /* ORSSerial.framework */; };
-		28EDCC92244F9C3E00FB3237 /* SliderSerialInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */; };
-		28EDCC93244F9C3E00FB3237 /* SliderSerialInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */; };
+		28EDCC92244F9C3E00FB3237 /* SliderCommunicationInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderCommunicationInterface.swift */; };
+		28EDCC93244F9C3E00FB3237 /* SliderCommunicationInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC91244F9C3E00FB3237 /* SliderCommunicationInterface.swift */; };
 		28EDCC95244FBB6600FB3237 /* Keyframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC94244FBB6600FB3237 /* Keyframe.swift */; };
 		28EDCC96244FBB6600FB3237 /* Keyframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDCC94244FBB6600FB3237 /* Keyframe.swift */; };
+		28F6A51D2509474E0071A5D9 /* RunStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F6A51C2509474E0071A5D9 /* RunStatusView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +78,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		28842810251BD6A500F705EB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2884280F251BD6A500F705EB /* ORSSerial.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28A0712024631C430000EE2A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,7 +103,14 @@
 /* Begin PBXFileReference section */
 		28354065248EB7D9002D92D0 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		28354069248EB905002D92D0 /* SingleStepperStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleStepperStatusView.swift; sourceTree = "<group>"; };
+		283F26F3252BE57500CDCB51 /* RampTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RampTest.swift; sourceTree = "<group>"; };
 		284BCFFB2467724800C929E8 /* GlobalControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalControlView.swift; sourceTree = "<group>"; };
+		284FA25824AA682500CE5978 /* StepperState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperState.swift; sourceTree = "<group>"; };
+		284FA25C24AA87C200CE5978 /* BLEStatusRampStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEStatusRampStat.swift; sourceTree = "<group>"; };
+		284FA25E24AA87D500CE5978 /* BLEStatusDriverStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEStatusDriverStat.swift; sourceTree = "<group>"; };
+		284FA26024AA87EA00CE5978 /* BLEStatusGlobalStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEStatusGlobalStat.swift; sourceTree = "<group>"; };
+		284FA26224AA880A00CE5978 /* BLEStatusBoardStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEStatusBoardStat.swift; sourceTree = "<group>"; };
+		284FA26424AA881500CE5978 /* BLEStatusSystemStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEStatusSystemStat.swift; sourceTree = "<group>"; };
 		287127C7247B571D00EC149E /* SingleRampConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleRampConfigurationView.swift; sourceTree = "<group>"; };
 		287127CB247B5E2600EC149E /* RampConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RampConfigurationView.swift; sourceTree = "<group>"; };
 		287127CD247C1D8400EC149E /* SingleRampDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleRampDisplayView.swift; sourceTree = "<group>"; };
@@ -80,10 +118,16 @@
 		2882609A24646138007C04AF /* StepperControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperControlView.swift; sourceTree = "<group>"; };
 		2882609C24646976007C04AF /* StepperMotor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperMotor.swift; sourceTree = "<group>"; };
 		2882609E24646D57007C04AF /* MasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterController.swift; sourceTree = "<group>"; };
+		28842802251BD65B00F705EB /* TimeLapseDriverRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeLapseDriverRelease.entitlements; sourceTree = "<group>"; };
 		288AA4D02474AF7400B440CC /* Ramp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ramp.swift; sourceTree = "<group>"; };
+		289BCA6B2492889300A22D21 /* DefaultRamps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRamps.swift; sourceTree = "<group>"; };
 		28A0712224631C430000EE2A /* TimelapseCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TimelapseCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		28A0712424631C430000EE2A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		28A0712A246321620000EE2A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		28C92954249472DE009E9C5B /* BLEWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEWrapper.swift; sourceTree = "<group>"; };
+		28D353AC252F524200420CED /* MasterControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterControllerTest.swift; sourceTree = "<group>"; };
+		28DB905524C4F4D10094C257 /* SingleFrameEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleFrameEditorView.swift; sourceTree = "<group>"; };
+		28DB905924C62DD70094C257 /* KeyframeRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyframeRowView.swift; sourceTree = "<group>"; };
 		28EDCC62244F9A9D00FB3237 /* TimeLapseDriver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeLapseDriver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28EDCC69244F9AA000FB3237 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -95,8 +139,9 @@
 		28EDCC7B244F9AA000FB3237 /* TimeLapseDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLapseDriverTests.swift; sourceTree = "<group>"; };
 		28EDCC7D244F9AA000FB3237 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		28EDCC86244F9B7700FB3237 /* ORSSerialPort.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ORSSerialPort.xcodeproj; path = "Frameworks/ORSSerialPort/Framework Project/ORSSerialPort.xcodeproj"; sourceTree = "<group>"; };
-		28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderSerialInterface.swift; sourceTree = "<group>"; };
+		28EDCC91244F9C3E00FB3237 /* SliderCommunicationInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderCommunicationInterface.swift; sourceTree = "<group>"; };
 		28EDCC94244FBB6600FB3237 /* Keyframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyframe.swift; sourceTree = "<group>"; };
+		28F6A51C2509474E0071A5D9 /* RunStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunStatusView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +156,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28EDCC90244F9BB900FB3237 /* ORSSerial.framework in Frameworks */,
+				2884280E251BD6A500F705EB /* ORSSerial.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +181,9 @@
 		28EDCC59244F9A9D00FB3237 = {
 			isa = PBXGroup;
 			children = (
-				28EDCC91244F9C3E00FB3237 /* SliderSerialInterface.swift */,
+				28EDCC91244F9C3E00FB3237 /* SliderCommunicationInterface.swift */,
+				28C92954249472DE009E9C5B /* BLEWrapper.swift */,
+				284FA25824AA682500CE5978 /* StepperState.swift */,
 				28EDCC64244F9A9D00FB3237 /* TimeLapseDriver */,
 				28EDCC7A244F9AA000FB3237 /* TimeLapseDriverTests */,
 				28A0712324631C430000EE2A /* TimelapseCLI */,
@@ -159,11 +206,13 @@
 		28EDCC64244F9A9D00FB3237 /* TimeLapseDriver */ = {
 			isa = PBXGroup;
 			children = (
+				28842802251BD65B00F705EB /* TimeLapseDriverRelease.entitlements */,
 				28EDCC65244F9A9D00FB3237 /* AppDelegate.swift */,
 				28EDCC94244FBB6600FB3237 /* Keyframe.swift */,
 				2882609E24646D57007C04AF /* MasterController.swift */,
 				2882609C24646976007C04AF /* StepperMotor.swift */,
 				288AA4D02474AF7400B440CC /* Ramp.swift */,
+				289BCA6B2492889300A22D21 /* DefaultRamps.swift */,
 				28EDCC69244F9AA000FB3237 /* Assets.xcassets */,
 				28EDCC6E244F9AA000FB3237 /* Main.storyboard */,
 				28EDCC71244F9AA000FB3237 /* Info.plist */,
@@ -171,13 +220,21 @@
 				28EDCC6B244F9AA000FB3237 /* Preview Content */,
 				28A0712A246321620000EE2A /* ContentView.swift */,
 				284BCFFB2467724800C929E8 /* GlobalControlView.swift */,
+				28F6A51C2509474E0071A5D9 /* RunStatusView.swift */,
 				288260962463AD7F007C04AF /* KeyframeEditView.swift */,
+				28DB905924C62DD70094C257 /* KeyframeRowView.swift */,
+				28DB905524C4F4D10094C257 /* SingleFrameEditorView.swift */,
 				2882609A24646138007C04AF /* StepperControlView.swift */,
 				287127C7247B571D00EC149E /* SingleRampConfigurationView.swift */,
 				287127CD247C1D8400EC149E /* SingleRampDisplayView.swift */,
 				287127CB247B5E2600EC149E /* RampConfigurationView.swift */,
 				28354065248EB7D9002D92D0 /* StatusView.swift */,
 				28354069248EB905002D92D0 /* SingleStepperStatusView.swift */,
+				284FA25C24AA87C200CE5978 /* BLEStatusRampStat.swift */,
+				284FA25E24AA87D500CE5978 /* BLEStatusDriverStat.swift */,
+				284FA26024AA87EA00CE5978 /* BLEStatusGlobalStat.swift */,
+				284FA26224AA880A00CE5978 /* BLEStatusBoardStat.swift */,
+				284FA26424AA881500CE5978 /* BLEStatusSystemStat.swift */,
 			);
 			path = TimeLapseDriver;
 			sourceTree = "<group>";
@@ -194,6 +251,8 @@
 			isa = PBXGroup;
 			children = (
 				28EDCC7B244F9AA000FB3237 /* TimeLapseDriverTests.swift */,
+				283F26F3252BE57500CDCB51 /* RampTest.swift */,
+				28D353AC252F524200420CED /* MasterControllerTest.swift */,
 				28EDCC7D244F9AA000FB3237 /* Info.plist */,
 			);
 			path = TimeLapseDriverTests;
@@ -242,6 +301,7 @@
 				28EDCC5E244F9A9D00FB3237 /* Sources */,
 				28EDCC5F244F9A9D00FB3237 /* Frameworks */,
 				28EDCC60244F9A9D00FB3237 /* Resources */,
+				28842810251BD6A500F705EB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -277,7 +337,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1150;
+				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					28A0712124631C430000EE2A = {
 						CreatedOnToolsVersion = 11.4.1;
@@ -359,7 +419,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28A0712924631C630000EE2A /* SliderSerialInterface.swift in Sources */,
+				28A0712924631C630000EE2A /* SliderCommunicationInterface.swift in Sources */,
 				28A0712524631C430000EE2A /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -370,19 +430,30 @@
 			files = (
 				2882609B24646138007C04AF /* StepperControlView.swift in Sources */,
 				287127CC247B5E2600EC149E /* RampConfigurationView.swift in Sources */,
+				284FA26324AA880A00CE5978 /* BLEStatusBoardStat.swift in Sources */,
+				284FA26124AA87EA00CE5978 /* BLEStatusGlobalStat.swift in Sources */,
 				284BCFFC2467724800C929E8 /* GlobalControlView.swift in Sources */,
+				28DB905A24C62DD70094C257 /* KeyframeRowView.swift in Sources */,
 				288260A0246476CA007C04AF /* StepperMotor.swift in Sources */,
 				28354066248EB7D9002D92D0 /* StatusView.swift in Sources */,
 				288AA4D12474AF7400B440CC /* Ramp.swift in Sources */,
+				28F6A51D2509474E0071A5D9 /* RunStatusView.swift in Sources */,
 				2882609F24646D57007C04AF /* MasterController.swift in Sources */,
 				2835406A248EB905002D92D0 /* SingleStepperStatusView.swift in Sources */,
+				284FA25F24AA87D500CE5978 /* BLEStatusDriverStat.swift in Sources */,
 				28EDCC95244FBB6600FB3237 /* Keyframe.swift in Sources */,
-				28EDCC92244F9C3E00FB3237 /* SliderSerialInterface.swift in Sources */,
+				284FA26524AA881500CE5978 /* BLEStatusSystemStat.swift in Sources */,
+				284FA25D24AA87C200CE5978 /* BLEStatusRampStat.swift in Sources */,
+				28EDCC92244F9C3E00FB3237 /* SliderCommunicationInterface.swift in Sources */,
 				287127C8247B571D00EC149E /* SingleRampConfigurationView.swift in Sources */,
 				28A0712B246321620000EE2A /* ContentView.swift in Sources */,
+				284FA25924AA682500CE5978 /* StepperState.swift in Sources */,
+				28DB905624C4F4D10094C257 /* SingleFrameEditorView.swift in Sources */,
 				28EDCC66244F9A9D00FB3237 /* AppDelegate.swift in Sources */,
+				289BCA6C2492889300A22D21 /* DefaultRamps.swift in Sources */,
 				288260972463AD7F007C04AF /* KeyframeEditView.swift in Sources */,
 				287127CE247C1D8400EC149E /* SingleRampDisplayView.swift in Sources */,
+				28C92955249472DE009E9C5B /* BLEWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,8 +462,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				28EDCC96244FBB6600FB3237 /* Keyframe.swift in Sources */,
-				28EDCC93244F9C3E00FB3237 /* SliderSerialInterface.swift in Sources */,
+				283F26FF252BE64400CDCB51 /* MasterController.swift in Sources */,
+				283F26F4252BE57500CDCB51 /* RampTest.swift in Sources */,
+				28EDCC93244F9C3E00FB3237 /* SliderCommunicationInterface.swift in Sources */,
+				283F26FC252BE63400CDCB51 /* DefaultRamps.swift in Sources */,
+				283F26F9252BE5E100CDCB51 /* Ramp.swift in Sources */,
 				28EDCC7C244F9AA000FB3237 /* TimeLapseDriverTests.swift in Sources */,
+				28D353AD252F524200420CED /* MasterControllerTest.swift in Sources */,
+				283F2708252BE66400CDCB51 /* StepperMotor.swift in Sources */,
+				283F2705252BE65400CDCB51 /* StepperState.swift in Sources */,
+				283F2702252BE65000CDCB51 /* BLEWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +543,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -524,6 +604,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -556,10 +637,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TimeLapseDriver/TimeLapseDriver.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"TimeLapseDriver/Preview Content\"";
+				DEVELOPMENT_TEAM = 394HN54UJM;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TimeLapseDriver/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -577,11 +661,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TimeLapseDriver/TimeLapseDriver.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = TimeLapseDriver/TimeLapseDriverRelease.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"TimeLapseDriver/Preview Content\"";
+				DEVELOPMENT_TEAM = 394HN54UJM;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TimeLapseDriver/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -599,9 +686,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 394HN54UJM;
 				INFOPLIST_FILE = TimeLapseDriverTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -620,9 +707,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 394HN54UJM;
 				INFOPLIST_FILE = TimeLapseDriverTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
