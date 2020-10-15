@@ -85,6 +85,12 @@ final class Ramp: ObservableObject, NSCopying {
             if (factor > 10) {
                 print ("Base tt was \(tt), but wanted \(inSeconds), so factor is \(factor)")
             }
+            
+            // If the factor is very small, actually just stay the same, to prevent weird edge cases where adjusting by very
+            // small amounts increases the error. Just decide we are close enough.
+            if fabs(factor-1.0) < 0.01 {
+                factor = 1.0
+            }
             print ("Speedup factor: \(factor)")
             
             if factor * Double(newRamp.vmax) > Double(UInt32.max) {
@@ -176,7 +182,7 @@ final class Ramp: ObservableObject, NSCopying {
                 
                 // Now our quadratic terms (for v2)
                 let A = 0.5*amaxu + 0.5*Af*amaxu
-                let B = v1u + Af*v1u + 0.5*v1u + 0.5*Af*v1u
+                let B = 1.5*v1u + 1.5*Af*v1u
                 let C = -Double(distance) + dist1 + dist5
                 
                 let sqrtTerm = B*B-4*A*C
@@ -187,7 +193,7 @@ final class Ramp: ObservableObject, NSCopying {
                 let t2A = (-B + sqrt(sqrtTerm)) / (2*A)
                 let t2B = (-B - sqrt(sqrtTerm)) / (2*A)
                 let t2Actual = max(t2A, t2B)
-                let t4Actual = (t2Actual*amaxu) / d1u
+                let t4Actual = (t2Actual*amaxu) / dmaxu
                 let tActual = t1 + t2Actual + t4Actual + t5
                                 
                 return (tActual,.phase2)

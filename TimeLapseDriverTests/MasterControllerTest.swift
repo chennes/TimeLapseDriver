@@ -18,7 +18,7 @@ class MasterControllerTest: XCTestCase {
     }
     
     func testPositionFollowingPan() throws {
-        let mc = MasterController()
+        //let mc = MasterController()
         
         // func getPositionFollowingPanFrom(sliderPosition:Int32, startDistanceToTarget:Double, endDistanceToTarget:Double, totalSlideSteps:Int32, totalPanSteps:Int32) -> Int32
         
