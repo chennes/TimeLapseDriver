@@ -75,6 +75,9 @@ final class Ramp: ObservableObject, NSCopying {
     
     static func createRequiredRamp(from startingRamp: Ramp, toTravel: UInt32, inSeconds: Double, maxIterations: Int = 3) -> Ramp {
         let newRamp = startingRamp.copy() as! Ramp
+        if toTravel == 0 {
+            return newRamp
+        }
         var counter = 0;
         var factor = 0.0
         while counter < maxIterations && fabs(factor-1.0) > 0.01 {

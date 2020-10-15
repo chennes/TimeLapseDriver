@@ -165,7 +165,7 @@ final class MasterController: ObservableObject
     
     func setupTimelapseRun (totalFrames:Int) {
         configureTimelapse()
-        countdownTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: {timer in
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: {timer in
             self.updateTimeToNextFrame()
         })
         stateSequence.append(.timelapse)
